@@ -1,0 +1,59 @@
+/* Estilos para mejorar la visualización de las citas */
+
+/* Estilos para las cabeceras de información */
+.cita-detail-label {
+    color: #333333 !important; /* Color oscuro para texto */
+    background-color: #e0e8ff !important; /* Fondo azul claro */
+    padding: 5px 10px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    width: auto !important;
+    min-width: 140px !important;
+}
+
+/* Estilos para fechas de cita */
+[class^="martes"], [class^="jueves"], [class^="lunes"], 
+[class^="miércoles"], [class^="viernes"], [class^="sábado"], [class^="domingo"] {
+    color: white !important;
+    background-color: #0056b3 !important;
+    padding: 8px 15px !important;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+    display: inline-block !important;
+}
+
+/* Estilo para hora de la cita */
+[class^="15:00"], [class^="16:30"], [class^="08:00"] {
+    color: white !important;
+    background-color: #1b75d0 !important;
+    padding: 5px 12px !important;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+}
+
+/* Estilos para las etiquetas */
+.cita-estado, .estado-completada, .estado-pendiente {
+    border-radius: 0 5px 5px 0 !important;
+    width: 12px !important;
+}
+
+/* Título principal de Próximas Citas */
+h2, .mb-0 {
+    color: #0056b3 !important;
+    font-weight: bold !important;
+    margin-bottom: 15px !important;
+}
+
+/* Estilos para etiquetas de información */
+.cita-detail-value {
+    padding: 5px !important;
+    color: #333 !important;
+}
+
+/* Mejora el contraste de las etiquetas con el fondo */
+.badge-pendiente, .badge-completada, .badge-confirmada {
+    color: #000000 !important;
+    font-weight: bold !important;
+}

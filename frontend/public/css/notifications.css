@@ -1,0 +1,202 @@
+/* Estilos para el sistema de notificaciones */
+
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.notification-bell i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4757;
+    color: white;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 320px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+}
+
+.notification-dropdown.show {
+    display: block;
+}
+
+.notification-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+}
+
+.notification-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.notification-header .clear-all {
+    color: #2d98da;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.notification-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.notification-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+    background-color: #f0f7ff;
+}
+
+.notification-item .notification-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.notification-item .notification-message {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.notification-item .notification-time {
+    font-size: 0.75rem;
+    color: #999;
+    display: block;
+}
+
+.notification-item .notification-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.notification-item .notification-actions a {
+    font-size: 0.8rem;
+    color: #2d98da;
+    text-decoration: none;
+}
+
+.notification-item .notification-actions .delete-notification {
+    color: #ff4757;
+    cursor: pointer;
+}
+
+.notification-footer {
+    padding: 10px 15px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-radius: 0 0 8px 8px;
+}
+
+.notification-footer a {
+    color: #2d98da;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.notification-empty {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Animación para nuevas notificaciones */
+@keyframes notification-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.notification-new {
+    animation: notification-pulse 1s ease-in-out;
+}
+
+/* Estilos para el badge de chat */
+.nav-link-with-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.chat-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff3636;
+    color: white;
+    border-radius: 50%;
+    min-width: 22px;
+    height: 22px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    animation: pulse-animation 1.5s infinite;
+    z-index: 100;
+}
+
+@keyframes pulse-animation {
+    0% { transform: scale(1); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); }
+    50% { transform: scale(1.1); box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4); }
+    100% { transform: scale(1); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); }
+}
+
+.nav-link-with-badge {
+    position: relative;
+    display: inline-block;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 576px) {
+    .notification-dropdown {
+        width: 290px;
+        right: -100%;
+    }
+}

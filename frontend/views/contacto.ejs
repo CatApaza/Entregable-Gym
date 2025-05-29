@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= gimnasio.nombre %> - Contacto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2b5876;
+            --secondary-color: #4e4376;
+            --accent-color: #00c6ff;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--dark-color);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+        
+        .hero-section {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1000') center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .contact-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+        
+        .contact-icon {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .contact-info {
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--primary-color);
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control {
+            border-radius: 5px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 198, 255, 0.25);
+        }
+        
+        .btn-accent {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-accent:hover {
+            background: #0099cc;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <% if (gimnasio.logoUrl) { %>
+                    <img src="<%= gimnasio.logoUrl %>" alt="<%= gimnasio.nombre %>" height="40" class="me-2">
+                <% } %>
+                <%= gimnasio.nombre %>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gimnasio/info">Información</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gimnasio/planes">Planes y Precios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/gimnasio/contacto">Contacto</a>
+                    </li>
+                    <% if (usuario) { %>
+                        <% if (usuario.tipoUsuario === 'cliente') { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/frontend/clientes/<%= usuario._id %>">Mi Dashboard</a>
+                            </li>
+                        <% } else if (usuario.tipoUsuario === 'entrenador') { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/frontend/entrenadores/<%= usuario._id %>">Mi Dashboard</a>
+                            </li>
+                        <% } %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Cerrar Sesión</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/frontend/login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/frontend/registro">Registrarse</a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="hero-title">Contacto</h1>
+            <p class="hero-subtitle">Estamos aquí para ayudarte</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <div class="container py-5">
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-lg-5 mb-4">
+                <div class="contact-card">
+                    <h2 class="contact-title"><i class="fas fa-address-card contact-icon"></i>Información de Contacto</h2>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong><br>
+                        <%= gimnasio.direccion.calle %> <%= gimnasio.direccion.numero %><br>
+                        Col. <%= gimnasio.direccion.colonia %><br>
+                        <%= gimnasio.direccion.ciudad %>, <%= gimnasio.direccion.estado %><br>
+                        C.P. <%= gimnasio.direccion.codigoPostal %>
+                        </p>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> <strong>Teléfono:</strong><br>
+                        <%= gimnasio.contacto.telefono %>
+                        </p>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong><br>
+                        <%= gimnasio.contacto.email %>
+                        </p>
+                    </div>
+                    <% if (gimnasio.contacto.whatsapp) { %>
+                    <div class="contact-info">
+                        <p><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong><br>
+                        <%= gimnasio.contacto.whatsapp %>
+                        </p>
+                    </div>
+                    <% } %>
+                    <div class="contact-info">
+                        <p><i class="fas fa-clock"></i> <strong>Horarios:</strong></p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Lunes</span>
+                                <span><%= gimnasio.horarios.lunes %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Martes</span>
+                                <span><%= gimnasio.horarios.martes %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Miércoles</span>
+                                <span><%= gimnasio.horarios.miercoles %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Jueves</span>
+                                <span><%= gimnasio.horarios.jueves %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Viernes</span>
+                                <span><%= gimnasio.horarios.viernes %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Sábado</span>
+                                <span><%= gimnasio.horarios.sabado %></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Domingo</span>
+                                <span><%= gimnasio.horarios.domingo %></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links mt-4">
+                        <h5>Síguenos en redes sociales</h5>
+                        <div class="d-flex justify-content-start mt-3">
+                            <% if (gimnasio.redesSociales && gimnasio.redesSociales.facebook) { %>
+                                <a href="<%= gimnasio.redesSociales.facebook %>" target="_blank" class="me-3"><i class="fab fa-facebook-square fa-2x"></i></a>
+                            <% } %>
+                            <% if (gimnasio.redesSociales && gimnasio.redesSociales.instagram) { %>
+                                <a href="<%= gimnasio.redesSociales.instagram %>" target="_blank" class="me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                            <% } %>
+                            <% if (gimnasio.redesSociales && gimnasio.redesSociales.twitter) { %>
+                                <a href="<%= gimnasio.redesSociales.twitter %>" target="_blank" class="me-3"><i class="fab fa-twitter-square fa-2x"></i></a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="col-lg-7">
+                <div class="contact-card">
+                    <h2 class="contact-title"><i class="fas fa-paper-plane contact-icon"></i>Envíanos un mensaje</h2>
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" placeholder="Tu nombre" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="tu@email.com" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" placeholder="Tu teléfono">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asunto" class="form-label">Asunto</label>
+                            <input type="text" class="form-control" id="asunto" placeholder="Asunto de tu mensaje" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mensaje" class="form-label">Mensaje</label>
+                            <textarea class="form-control" id="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="politicaPrivacidad" required>
+                            <label class="form-check-label" for="politicaPrivacidad">He leído y acepto la política de privacidad</label>
+                        </div>
+                        <button type="submit" class="btn btn-accent">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="mt-5">
+            <h2 class="text-center text-white mb-4">Encuéntranos</h2>
+            <div class="map-container">
+                <iframe 
+                    src="https://maps.google.com/maps?q=<%= encodeURIComponent(gimnasio.direccion.calle + ' ' + gimnasio.direccion.numero + ', ' + gimnasio.direccion.ciudad) %>&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><%= gimnasio.nombre %></h5>
+                    <p><%= gimnasio.slogan %></p>
+                    <div class="social-links mt-3">
+                        <% if (gimnasio.redesSociales && gimnasio.redesSociales.facebook) { %>
+                            <a href="<%= gimnasio.redesSociales.facebook %>" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <% } %>
+                        <% if (gimnasio.redesSociales && gimnasio.redesSociales.instagram) { %>
+                            <a href="<%= gimnasio.redesSociales.instagram %>" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <% } %>
+                        <% if (gimnasio.redesSociales && gimnasio.redesSociales.twitter) { %>
+                            <a href="<%= gimnasio.redesSociales.twitter %>" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <% } %>
+                        <% if (!gimnasio.redesSociales || (!gimnasio.redesSociales.facebook && !gimnasio.redesSociales.instagram && !gimnasio.redesSociales.twitter)) { %>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Contacto</h5>
+                    <p><i class="fas fa-phone me-2"></i><%= gimnasio.contacto.telefono %></p>
+                    <p><i class="fas fa-envelope me-2"></i><%= gimnasio.contacto.email %></p>
+                    <% if (gimnasio.contacto.whatsapp) { %>
+                        <p><i class="fab fa-whatsapp me-2"></i><%= gimnasio.contacto.whatsapp %></p>
+                    <% } %>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/gimnasio/info" class="text-white">Información</a></li>
+                        <li><a href="/gimnasio/planes" class="text-white">Planes y Precios</a></li>
+                        <li><a href="/gimnasio/contacto" class="text-white">Contacto</a></li>
+                        <li><a href="/frontend/login" class="text-white">Iniciar Sesión</a></li>
+                        <li><a href="/frontend/registro" class="text-white">Registrarse</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p>&copy; <%= new Date().getFullYear() %> <%= gimnasio.nombre %>. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script para manejar el envío del formulario
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Aquí podrías agregar código para enviar el formulario por AJAX
+            // Por ahora, solo mostraremos un mensaje de éxito
+            alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

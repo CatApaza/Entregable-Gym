@@ -1,0 +1,216 @@
+/* Dashboard Styles */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #2196F3;
+  --warning-color: #FF9800;
+  --danger-color: #F44336;
+  --dark-color: #333;
+  --light-color: #f4f4f4;
+  --success-color: #28a745;
+  --info-color: #17a2b8;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+  background-color: white;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-card-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 10px 10px 0 0;
+}
+
+.dashboard-card-body {
+  padding: 20px;
+}
+
+.stats-card {
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card i {
+  font-size: 32px;
+  opacity: 0.8;
+}
+
+.stats-card.primary {
+  background-color: var(--primary-color);
+}
+
+.stats-card.secondary {
+  background-color: var(--secondary-color);
+}
+
+.stats-card.warning {
+  background-color: var(--warning-color);
+}
+
+.stats-card.danger {
+  background-color: var(--danger-color);
+}
+
+.calendar-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.appointment-item {
+  border-left: 4px solid var(--primary-color);
+  margin-bottom: 10px;
+  padding: 12px 15px;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: 0 5px 5px 0;
+}
+
+.appointment-item.pending {
+  border-left-color: var(--warning-color);
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.appointment-item.cancelled {
+  border-left-color: var(--danger-color);
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.appointment-item.completed {
+  border-left-color: var(--info-color);
+  background-color: rgba(23, 162, 184, 0.1);
+}
+
+.client-list .client-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.client-list .client-item:last-child {
+  border-bottom: none;
+}
+
+.client-list .client-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.client-list .client-info {
+  flex-grow: 1;
+}
+
+.client-list .client-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.client-list .client-email {
+  font-size: 0.85em;
+  color: #6c757d;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon i {
+  margin-right: 8px;
+}
+
+.badge-status {
+  padding: 5px 10px;
+  font-size: 0.75em;
+  font-weight: 500;
+  border-radius: 50px;
+}
+
+.badge-status.pending {
+  background-color: rgba(255, 152, 0, 0.2);
+  color: var(--warning-color);
+}
+
+.badge-status.confirmed {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: var(--success-color);
+}
+
+.badge-status.cancelled {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: var(--danger-color);
+}
+
+.badge-status.completed {
+  background-color: rgba(23, 162, 184, 0.2);
+  color: var(--info-color);
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table th {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+  padding: 15px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+  padding: 15px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pagination .page-item .page-link {
+  color: var(--primary-color);
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con Entrenadores | GymApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .users-sidebar {
+            width: 300px;
+            background: linear-gradient(to bottom, var(--primary-color), #0851c5);
+            color: white;
+            padding: 15px;
+            border-radius: 10px 0 0 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #e5e5e5;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #e5e5e5;
+            background-color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .chat-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #0b5ed7;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .user-item:hover, .user-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--info-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .search-bar {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .message.incoming {
+            justify-content: flex-start;
+        }
+
+        .message.outgoing {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .message.incoming .message-content {
+            background-color: #e5e5e5;
+            border-top-left-radius: 0;
+        }
+
+        .message.outgoing .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-right-radius: 0;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-button:hover {
+            opacity: 0.8;
+        }
+
+        .notification-badge {
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        .no-trainer-selected {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background-color: #f9f9f9;
+            color: #6c757d;
+        }
+
+        .no-trainer-selected i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .no-trainer-selected p {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        /* Estado de online */
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+
+        .online-indicator.online {
+            background-color: var(--success-color);
+        }
+
+        .online-indicator.offline {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                flex-direction: column;
+                margin: 10px;
+            }
+
+            .users-sidebar {
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .chat-area {
+                border-left: none;
+                border-top: 1px solid #e5e5e5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Lista de entrenadores -->
+        <div class="users-sidebar">
+            <div class="users-header">
+                <h4>Entrenadores</h4>
+                <a href="/admin/dashboard" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchTrainer" placeholder="Buscar entrenador...">
+            </div>
+            <div id="trainersList" class="trainers-list">
+                <!-- La lista de entrenadores se cargará dinámicamente aquí -->
+                <div class="text-center mt-4 text-white-50">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p class="mt-2">Cargando entrenadores...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de chat -->
+        <div class="chat-area" id="chatArea">
+            <div class="no-trainer-selected" id="noTrainerSelected">
+                <i class="fas fa-comments"></i>
+                <p>Selecciona un entrenador para comenzar a chatear</p>
+            </div>
+            
+            <!-- Esta sección se mostrará cuando se seleccione un entrenador -->
+            <div id="activeChatArea" style="display: none; flex-direction: column; height: 100%;">
+                <div class="chat-header" id="chatHeader">
+                    <!-- La información del entrenador seleccionado se mostrará aquí -->
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Los mensajes se cargarán dinámicamente aquí -->
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Escribe un mensaje...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i> Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Conectar con Socket.io
+            const socket = io();
+            
+            // Variables globales
+            let currentTrainerId = null;
+            let currentTrainerName = null;
+            let adminId = '<%= usuario._id %>';
+            let adminName = '<%= usuario.nombre %> <%= usuario.apellido %>';
+            let adminRole = 'administrador';
+            
+            // Elementos DOM
+            const trainersList = document.getElementById('trainersList');
+            const searchTrainer = document.getElementById('searchTrainer');
+            const chatMessages = document.getElementById('chatMessages');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatHeader = document.getElementById('chatHeader');
+            const noTrainerSelected = document.getElementById('noTrainerSelected');
+            const activeChatArea = document.getElementById('activeChatArea');
+            
+            // Cargar lista de entrenadores
+            function loadTrainers() {
+                fetch('/api/admin/entrenadores')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.entrenadores) {
+                            renderTrainers(data.entrenadores);
+                        } else {
+                            trainersList.innerHTML = '<p class="text-center text-white-50">No se encontraron entrenadores.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar entrenadores:', error);
+                        trainersList.innerHTML = '<p class="text-center text-white-50">Error al cargar entrenadores.</p>';
+                    });
+            }
+            
+            // Renderizar lista de entrenadores
+            function renderTrainers(trainers) {
+                trainersList.innerHTML = '';
+                
+                if (trainers.length === 0) {
+                    trainersList.innerHTML = '<p class="text-center text-white-50">No se encontraron entrenadores.</p>';
+                    return;
+                }
+                
+                trainers.forEach(trainer => {
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+                    userItem.dataset.id = trainer._id;
+                    
+                    // Usar iniciales del entrenador para el avatar
+                    const initials = getInitials(trainer.nombre, trainer.apellido);
+                    
+                    userItem.innerHTML = `
+                        <div class="user-avatar">${initials}</div>
+                        <div class="user-info">
+                            <div class="user-name">${trainer.nombre} ${trainer.apellido}</div>
+                            <div class="user-status">
+                                <span>Entrenador</span>
+                                <span class="online-indicator ${trainer.online ? 'online' : 'offline'}"></span>
+                            </div>
+                        </div>
+                        <div class="unread-count" id="unread-${trainer._id}" style="display: none;">
+                            <span class="notification-badge">0</span>
+                        </div>
+                    `;
+                    
+                    userItem.addEventListener('click', () => selectTrainer(trainer));
+                    trainersList.appendChild(userItem);
+                });
+            }
+            
+            // Obtener iniciales del nombre
+            function getInitials(firstName, lastName) {
+                const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+                const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+                return `${firstInitial}${lastInitial}`;
+            }
+            
+            // Seleccionar un entrenador para chatear
+            function selectTrainer(trainer) {
+                // Desactivar selección anterior
+                const activeItem = document.querySelector('.user-item.active');
+                if (activeItem) {
+                    activeItem.classList.remove('active');
+                }
+                
+                // Activar nuevo entrenador
+                const trainerItem = document.querySelector(`.user-item[data-id="${trainer._id}"]`);
+                if (trainerItem) {
+                    trainerItem.classList.add('active');
+                }
+                
+                // Actualizar variables globales
+                currentTrainerId = trainer._id;
+                currentTrainerName = `${trainer.nombre} ${trainer.apellido}`;
+                
+                // Actualizar header del chat
+                chatHeader.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <div class="user-avatar">${getInitials(trainer.nombre, trainer.apellido)}</div>
+                        <div class="ms-2">
+                            <div class="fw-bold">${trainer.nombre} ${trainer.apellido}</div>
+                            <div class="small text-muted">Entrenador</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Mostrar área de chat activa
+                noTrainerSelected.style.display = 'none';
+                activeChatArea.style.display = 'flex';
+                
+                // Resetear contador de mensajes no leídos
+                const unreadBadge = document.querySelector(`#unread-${trainer._id} .notification-badge`);
+                if (unreadBadge) {
+                    unreadBadge.textContent = '0';
+                    document.getElementById(`unread-${trainer._id}`).style.display = 'none';
+                }
+                
+                // Cargar historial de mensajes
+                loadChatHistory(adminId, trainer._id);
+                
+                // Indicar a Socket.io que se ha seleccionado un chat
+                socket.emit('join-admin-trainer-chat', {
+                    adminId: adminId,
+                    trainerId: trainer._id
+                });
+                
+                // Marcar mensajes como leídos
+                socket.emit('mark-messages-read', {
+                    userId: adminId,
+                    senderId: trainer._id
+                });
+            }
+            
+            // Cargar historial de chat
+            function loadChatHistory(adminId, trainerId) {
+                chatMessages.innerHTML = '<div class="text-center my-4"><i class="fas fa-spinner fa-spin"></i> Cargando mensajes...</div>';
+                
+                fetch(`/api/admin/mensajes/${adminId}/${trainerId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.mensajes) {
+                            renderMessages(data.mensajes);
+                        } else {
+                            chatMessages.innerHTML = '<p class="text-center text-muted my-4">No hay mensajes anteriores.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar historial de mensajes:', error);
+                        chatMessages.innerHTML = '<p class="text-center text-danger my-4">Error al cargar mensajes.</p>';
+                    });
+            }
+            
+            // Renderizar mensajes
+            function renderMessages(messages) {
+                chatMessages.innerHTML = '';
+                
+                if (messages.length === 0) {
+                    chatMessages.innerHTML = '<p class="text-center text-muted my-4">No hay mensajes anteriores.</p>';
+                    return;
+                }
+                
+                messages.forEach(message => {
+                    addMessageToChat(message);
+                });
+                
+                // Scroll al final del chat
+                scrollToBottom();
+            }
+            
+            // Agregar un mensaje al chat
+            function addMessageToChat(message) {
+                const isOutgoing = message.senderId === adminId;
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+                
+                // Formatear hora
+                const messageTime = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${message.message}
+                        <div class="message-time">${messageTime}</div>
+                    </div>
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            // Desplazar al final del chat
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Enviar mensaje
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                
+                if (!message || !currentTrainerId) return;
+                
+                const messageData = {
+                    senderId: adminId,
+                    senderName: adminName,
+                    senderType: adminRole,
+                    receiverId: currentTrainerId,
+                    receiverName: currentTrainerName,
+                    receiverType: 'entrenador',
+                    message: message,
+                    timestamp: new Date()
+                };
+                
+                // Enviar mensaje a través de Socket.io
+                socket.emit('admin-trainer-message', messageData);
+                
+                // Limpiar input
+                messageInput.value = '';
+                
+                // Agregar mensaje al chat localmente (sin esperar respuesta del servidor)
+                addMessageToChat(messageData);
+            }
+            
+            // Event Listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Indicador de escritura
+            messageInput.addEventListener('input', function() {
+                socket.emit('admin-writing', {
+                    adminId: adminId,
+                    trainerId: currentTrainerId
+                });
+            });
+            
+            searchTrainer.addEventListener('input', function() {
+                const searchValue = this.value.toLowerCase();
+                const trainerItems = document.querySelectorAll('.user-item');
+                
+                trainerItems.forEach(item => {
+                    const trainerName = item.querySelector('.user-name').textContent.toLowerCase();
+                    if (trainerName.includes(searchValue)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Socket.io Events
+            socket.on('connect', () => {
+                console.log('Conectado al servidor de Socket.io');
+                
+                // Registrar el administrador en Socket.io
+                socket.emit('register-admin', {
+                    adminId: adminId,
+                    adminName: adminName
+                });
+                
+                // Cargar entrenadores
+                loadTrainers();
+            });
+            
+            // Recibir mensaje del entrenador
+            socket.on(`admin-trainer-chat-${adminId}`, (message) => {
+                console.log('Mensaje recibido:', message);
+                
+                // Si el mensaje es del entrenador con el que estamos chateando actualmente
+                if (currentTrainerId === message.senderId) {
+                    addMessageToChat(message);
+                    
+                    // Marcar como leído
+                    socket.emit('mark-messages-read', {
+                        userId: adminId,
+                        senderId: message.senderId
+                    });
+                } else {
+                    // Incrementar contador de mensajes no leídos
+                    const unreadCountElement = document.querySelector(`#unread-${message.senderId}`);
+                    if (unreadCountElement) {
+                        unreadCountElement.style.display = 'block';
+                        const badge = unreadCountElement.querySelector('.notification-badge');
+                        const currentCount = parseInt(badge.textContent) || 0;
+                        badge.textContent = currentCount + 1;
+                    }
+                }
+            });
+            
+            // Actualizar estado online de entrenadores
+            socket.on('trainer-status-change', (data) => {
+                const trainerItem = document.querySelector(`.user-item[data-id="${data.trainerId}"]`);
+                if (trainerItem) {
+                    const statusIndicator = trainerItem.querySelector('.online-indicator');
+                    if (statusIndicator) {
+                        statusIndicator.className = `online-indicator ${data.online ? 'online' : 'offline'}`;
+                    }
+                }
+            });
+            
+            // Escuchar indicador de escritura del entrenador
+            socket.on('trainer-writing', (data) => {
+                if (currentTrainerId === data.trainerId) {
+                    typingIndicator.textContent = `${data.trainerName} está escribiendo...`;
+                    typingIndicator.style.display = 'block';
+                    
+                    // Ocultar después de 3 segundos
+                    setTimeout(() => {
+                        typingIndicator.style.display = 'none';
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat del Gimnasio con Ollama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #16222a 0%, #3a6073 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            background: rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h2 {
+            color: #16222a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-header a {
+            color: #16222a;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .chat-header a:hover {
+            transform: translateX(-5px);
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            position: relative;
+            word-break: break-word;
+            white-space: pre-line;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border-radius: 15px 15px 0 15px;
+            color: #16222a;
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px 15px 15px 0;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .interest-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .interest-red {
+            background-color: #ff4d4d;
+        }
+        
+        .interest-yellow {
+            background-color: #ffcc00;
+        }
+        
+        .interest-green {
+            background-color: #66cc66;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+        
+        .chat-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .chat-input button {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .chat-input button:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-input button i {
+            color: #16222a;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .status-indicator.online {
+            background-color: rgba(102, 204, 102, 0.2);
+            color: #66cc66;
+            border: 1px solid #66cc66;
+        }
+        
+        .status-indicator.offline {
+            background-color: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d;
+        }
+        
+        /* Animación para los puntos de carga */
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+        
+        .loading {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .loading .dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .loading .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2><i class="fas fa-robot"></i> Asistente IA con Ollama</h2>
+            <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Volver</a>
+        </div>
+        <div id="status-indicator" class="status-indicator offline">
+            <i class="fas fa-circle"></i> Verificando Ollama...
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">
+                ¡Hola! Soy tu asistente del gimnasio usando el modelo personalizado de Ollama. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre precios, planes, horarios o promociones.
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí..." autofocus>
+            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <!-- Incluir el cliente de Ollama -->
+    <script src="/js/ollama-client.js"></script>
+    
+    <script>
+        // Referencias a elementos del DOM
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const statusIndicator = document.getElementById('status-indicator');
+        
+        // Inicializar el cliente de Ollama
+        const ollamaClient = new OllamaClient({
+            host: 'localhost',
+            port: 11434,
+            model: 'gimnasio-app',
+            fallbackModel: 'llama3.1:8b'
+        });
+        
+        // Palabras clave para detectar nivel de interés
+        const palabrasRojo = ['precio', 'costo', 'cuanto cuesta', 'cuanto vale', 'tarifa', 'membresia', 'mensualidad', 'plan', 'pago', 'inscripcion', 'inscribir', 'registrar'];
+        const palabrasAmarillo = ['clase', 'horario', 'yoga', 'pilates', 'spinning', 'zumba', 'entrenador', 'hora', 'dias', 'abierto'];
+        
+        // Verificar disponibilidad de Ollama al cargar la página
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const isAvailable = await ollamaClient.checkAvailability();
+                
+                if (isAvailable) {
+                    statusIndicator.className = 'status-indicator online';
+                    statusIndicator.innerHTML = '<i class="fas fa-circle"></i> Ollama conectado';
+                } else {
+                    statusIndicator.className = 'status-indicator offline';
+                    statusIndicator.innerHTML = '<i class="fas fa-circle"></i> Ollama desconectado';
+                    agregarMensaje('No se pudo conectar con Ollama. Las respuestas pueden no ser precisas.', 'bot error');
+                }
+            } catch (error) {
+                console.error('Error al verificar disponibilidad de Ollama:', error);
+                statusIndicator.className = 'status-indicator offline';
+                statusIndicator.innerHTML = '<i class="fas fa-circle"></i> Error de conexión';
+            }
+        });
+        
+        // Evento para enviar mensaje al hacer clic en el botón
+        sendButton.addEventListener('click', enviarMensaje);
+        
+        // Evento para enviar mensaje al presionar Enter
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                enviarMensaje();
+            }
+        });
+        
+        // Función para enviar mensaje
+        function enviarMensaje() {
+            const mensaje = messageInput.value.trim();
+            
+            if (!mensaje) return;
+            
+            // Limpiar el input
+            messageInput.value = '';
+            
+            // Añadir mensaje del usuario al chat
+            agregarMensaje(mensaje, 'user');
+            
+            // Procesar el mensaje y obtener respuesta
+            procesarMensaje(mensaje);
+        }
+        
+        // Función para procesar el mensaje y obtener una respuesta
+        async function procesarMensaje(mensaje) {
+            // Evaluar nivel de interés
+            const nivelInteres = evaluarInteres(mensaje);
+            
+            // Mostrar indicador de carga
+            const loadingId = mostrarCargando();
+            
+            try {
+                // Construir un prompt detallado para Ollama
+                const prompt = `
+                Eres un asistente virtual para un gimnasio llamado "Fitness Center". 
+                
+                INFORMACIÓN DEL GIMNASIO:
+                - PLAN BÁSICO: 100 soles/mes - Incluye acceso ilimitado a sala de musculación, horario completo, vestidores y duchas.
+                - PLAN PLUS: 150 soles/mes - Incluye todo lo del plan básico, acceso a todas las clases grupales y 1 evaluación física mensual.
+                - PLAN PREMIUM: 200 soles/mes - Incluye todo lo del plan plus, 2 sesiones mensuales con entrenador personal, 1 evaluación nutricional mensual y acceso a la zona de hidroterapia.
+                
+                HORARIOS:
+                - Lunes a viernes: 6:00 AM a 10:00 PM
+                - Sábados: 8:00 AM a 8:00 PM
+                - Domingos y feriados: 9:00 AM a 2:00 PM
+                
+                CLASES GRUPALES:
+                - Lunes: Spinning (8:00 AM, 7:00 PM), Zumba (10:00 AM, 6:00 PM)
+                - Martes: Yoga (9:00 AM), Funcional (6:00 PM, 8:00 PM)
+                - Miércoles: Pilates (10:00 AM), HIIT (7:00 PM)
+                - Jueves: Body Pump (9:00 AM, 7:00 PM), Stretching (6:00 PM)
+                - Viernes: Zumba (10:00 AM), Boxeo (7:00 PM)
+                - Sábado: Yoga (10:00 AM), Funcional (12:00 PM)
+                - Domingo: Pilates (10:00 AM)
+                
+                FORMAS DE PAGO:
+                - Efectivo
+                - Tarjetas de crédito/débito (Visa, Mastercard, American Express)
+                - Transferencia bancaria
+                - Yape o Plin
+                - Débito automático (para planes trimestrales o anuales)
+                
+                INSCRIPCIÓN:
+                - Costo: 50 soles (incluye carnet de socio y evaluación física inicial)
+                - Documentos: DNI o pasaporte y comprobante de domicilio
+                - Promoción actual: 2x1 en inscripciones para nuevos miembros (válida hasta fin de mes)
+                
+                OFERTAS ESPECIALES (válidas hasta fin de mes):
+                - 2x1 en inscripciones para nuevos miembros
+                - Primera sesión de entrenamiento personal gratuita para nuevos miembros
+                - 50% de descuento en evaluación nutricional al contratar plan trimestral o anual
+                - Promoción "Trae un amigo": 20% de descuento en tu siguiente mensualidad
+                
+                INSTRUCCIONES:
+                - Responde de manera concisa, profesional y amigable.
+                - Si te preguntan por precios, proporciona los montos exactos en soles.
+                - Si te preguntan por horarios o clases, proporciona la información exacta.
+                - Si no sabes algo, di que consultarán con un entrenador para proporcionar la información correcta.
+                - No inventes información que no esté en los datos proporcionados.
+                
+                El cliente pregunta: "${mensaje}"
+                Tu respuesta:`;
+                
+                // Consultar a Ollama
+                const respuesta = await ollamaClient.generateResponse(prompt);
+                
+                // Quitar indicador de carga
+                quitarCargando(loadingId);
+                
+                // Añadir respuesta al chat
+                agregarMensaje(respuesta, 'bot', nivelInteres);
+            } catch (error) {
+                console.error('Error al procesar mensaje:', error);
+                
+                // Quitar indicador de carga
+                quitarCargando(loadingId);
+                
+                // Mostrar mensaje de error
+                agregarMensaje('Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, inténtalo de nuevo más tarde.', 'bot error');
+            }
+        }
+        
+        // Función para evaluar el nivel de interés
+        function evaluarInteres(mensaje) {
+            const mensajeLower = mensaje.toLowerCase();
+            
+            // Nivel ROJO: Alto interés - Preguntas sobre precios, pagos, inscripciones
+            for (const palabra of palabrasRojo) {
+                if (mensajeLower.includes(palabra)) {
+                    return 'rojo';
+                }
+            }
+            
+            // Nivel AMARILLO: Interés medio - Preguntas sobre planes, clases, entrenadores
+            for (const palabra of palabrasAmarillo) {
+                if (mensajeLower.includes(palabra)) {
+                    return 'amarillo';
+                }
+            }
+            
+            // Si no contiene ninguna palabra clave especial, es nivel verde (interés general)
+            return 'verde';
+        }
+        
+        // Función para agregar un mensaje al chat
+        function agregarMensaje(texto, tipo, nivelInteres = null) {
+            const mensaje = document.createElement('div');
+            mensaje.className = `message ${tipo}`;
+            mensaje.textContent = texto;
+            
+            // Si hay indicador de interés y es un mensaje del bot, mostrar el semáforo
+            if (nivelInteres && tipo === 'bot') {
+                const indicador = document.createElement('div');
+                indicador.className = `interest-indicator interest-${nivelInteres}`;
+                
+                if (nivelInteres === 'rojo') {
+                    indicador.title = 'Alto interés - Pregunta por precios, pagos o inscripción';
+                    indicador.textContent = '🔴';
+                } else if (nivelInteres === 'amarillo') {
+                    indicador.title = 'Interés medio - Pregunta por planes o clases';
+                    indicador.textContent = '🟡';
+                } else {
+                    indicador.title = 'Interés general';
+                    indicador.textContent = '🟢';
+                }
+                
+                mensaje.appendChild(indicador);
+            }
+            
+            chatMessages.appendChild(mensaje);
+            
+            // Hacer scroll hasta el final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Función para mostrar indicador de carga
+        function mostrarCargando() {
+            const id = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = id;
+            loadingDiv.className = 'message bot loading';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                loadingDiv.appendChild(dot);
+            }
+            
+            chatMessages.appendChild(loadingDiv);
+            
+            // Hacer scroll hasta el final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return id;
+        }
+        
+        // Función para quitar indicador de carga
+        function quitarCargando(id) {
+            const loadingDiv = document.getElementById(id);
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+    </script>
+</body>
+</html>

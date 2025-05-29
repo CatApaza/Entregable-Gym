@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programar Cita | GimnasioApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/clientDashboard.css">
+    <style>
+        .cita-form {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .form-header {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .form-header h2 {
+            color: #0d6efd;
+            font-weight: 600;
+        }
+        
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .time-slot {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .time-slot:hover {
+            background-color: #e9ecef;
+        }
+        
+        .time-slot.selected {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+        
+        .time-slot.unavailable {
+            background-color: #f8d7da;
+            color: #842029;
+            border-color: #f5c2c7;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="cita-form">
+                    <div class="form-header">
+                        <h2><i class="far fa-calendar-check me-2"></i>Programar Cita</h2>
+                        <p class="text-muted">Agenda una sesión con tu entrenador</p>
+                    </div>
+                    
+                    <form id="citaForm" action="/citas/crear" method="POST">
+                        <input type="hidden" name="clienteId" value="<%= clienteId %>">
+                        <input type="hidden" name="entrenadorId" value="<%= entrenadorId %>">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Entrenador:</label>
+                            <div class="form-control-plaintext">
+                                <i class="fas fa-user-tie me-2"></i>
+                                <%= entrenador.nombre %> <%= entrenador.apellido %>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="fecha" class="form-label">Fecha de la cita:</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="horario" class="form-label">Horario:</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="horaInicio" class="form-label">Hora de inicio:</label>
+                                    <select class="form-select" id="horaInicio" name="horaInicio" required>
+                                        <option value="">Selecciona hora de inicio</option>
+                                        <% for(let i=8; i<=20; i++) { %>
+                                            <option value="<%= i.toString().padStart(2, '0') %>:00"><%= i.toString().padStart(2, '0') %>:00</option>
+                                            <option value="<%= i.toString().padStart(2, '0') %>:30"><%= i.toString().padStart(2, '0') %>:30</option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="horaFin" class="form-label">Hora de fin:</label>
+                                    <select class="form-select" id="horaFin" name="horaFin" required>
+                                        <option value="">Selecciona hora de fin</option>
+                                        <% for(let i=8; i<=21; i++) { %>
+                                            <option value="<%= i.toString().padStart(2, '0') %>:00"><%= i.toString().padStart(2, '0') %>:00</option>
+                                            <option value="<%= i.toString().padStart(2, '0') %>:30"><%= i.toString().padStart(2, '0') %>:30</option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="tipoCita" class="form-label">Tipo de cita:</label>
+                            <select class="form-select" id="tipoCita" name="tipoCita" required>
+                                <option value="Entrenamiento">Entrenamiento</option>
+                                <option value="Evaluación">Evaluación física</option>
+                                <option value="Seguimiento">Seguimiento de progreso</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="notas" class="form-label">Notas adicionales:</label>
+                            <textarea class="form-control" id="notas" name="notas" rows="3" placeholder="Indica cualquier información relevante para tu entrenador..."></textarea>
+                        </div>
+                        
+                        <div id="disponibilidadAlert" class="alert alert-warning d-none">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="disponibilidadMensaje"></span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/clientes/<%= clienteId %>/citas" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="far fa-calendar-check me-2"></i>Programar Cita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script para verificar disponibilidad -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaInput = document.getElementById('fecha');
+            const horaInicioSelect = document.getElementById('horaInicio');
+            const horaFinSelect = document.getElementById('horaFin');
+            const disponibilidadAlert = document.getElementById('disponibilidadAlert');
+            const disponibilidadMensaje = document.getElementById('disponibilidadMensaje');
+            const submitBtn = document.getElementById('submitBtn');
+            const entrenadorId = '<%= entrenadorId %>';
+            
+            // Establecer la fecha mínima como hoy
+            const hoy = new Date();
+            const fechaMinima = hoy.toISOString().split('T')[0];
+            fechaInput.min = fechaMinima;
+            
+            // Establecer valor inicial como mañana
+            const manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            fechaInput.value = manana.toISOString().split('T')[0];
+            
+            // Función para verificar disponibilidad
+            function verificarDisponibilidad() {
+                const fecha = fechaInput.value;
+                const horaInicio = horaInicioSelect.value;
+                const horaFin = horaFinSelect.value;
+                
+                if (!fecha || !horaInicio || !horaFin) {
+                    return;
+                }
+                
+                // Validar que horaFin sea posterior a horaInicio
+                if (horaInicio >= horaFin) {
+                    disponibilidadAlert.classList.remove('d-none', 'alert-success');
+                    disponibilidadAlert.classList.add('alert-danger');
+                    disponibilidadMensaje.textContent = 'La hora de fin debe ser posterior a la hora de inicio.';
+                    submitBtn.disabled = true;
+                    return;
+                }
+                
+                // Realizar petición para verificar disponibilidad
+                fetch(`/citas/verificar-disponibilidad?entrenadorId=${entrenadorId}&fecha=${fecha}&horaInicio=${horaInicio}&horaFin=${horaFin}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.disponible) {
+                            disponibilidadAlert.classList.remove('d-none', 'alert-warning', 'alert-danger');
+                            disponibilidadAlert.classList.add('alert-success');
+                            disponibilidadMensaje.textContent = 'Horario disponible! Puedes programar tu cita.';
+                            submitBtn.disabled = false;
+                        } else {
+                            disponibilidadAlert.classList.remove('d-none', 'alert-success');
+                            disponibilidadAlert.classList.add('alert-warning');
+                            disponibilidadMensaje.textContent = 'Este horario no está disponible. Por favor, selecciona otro horario.';
+                            submitBtn.disabled = true;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al verificar disponibilidad:', error);
+                        disponibilidadAlert.classList.remove('d-none', 'alert-success', 'alert-warning');
+                        disponibilidadAlert.classList.add('alert-danger');
+                        disponibilidadMensaje.textContent = 'Error al verificar disponibilidad. Inténtalo de nuevo.';
+                        submitBtn.disabled = true;
+                    });
+            }
+            
+            // Eventos para verificar disponibilidad
+            fechaInput.addEventListener('change', verificarDisponibilidad);
+            horaInicioSelect.addEventListener('change', function() {
+                // Ajustar hora fin automáticamente a 1 hora después
+                if (this.value) {
+                    const [horas, minutos] = this.value.split(':');
+                    let horaFinAuto = parseInt(horas) + 1;
+                    if (horaFinAuto > 21) {
+                        horaFinAuto = 21;
+                    }
+                    horaFinSelect.value = `${horaFinAuto.toString().padStart(2, '0')}:${minutos}`;
+                }
+                verificarDisponibilidad();
+            });
+            horaFinSelect.addEventListener('change', verificarDisponibilidad);
+            
+            // Validar formulario antes de enviar
+            document.getElementById('citaForm').addEventListener('submit', function(event) {
+                const fecha = fechaInput.value;
+                const horaInicio = horaInicioSelect.value;
+                const horaFin = horaFinSelect.value;
+                
+                if (!fecha || !horaInicio || !horaFin) {
+                    event.preventDefault();
+                    alert('Por favor, completa todos los campos del formulario.');
+                    return;
+                }
+                
+                if (horaInicio >= horaFin) {
+                    event.preventDefault();
+                    alert('La hora de fin debe ser posterior a la hora de inicio.');
+                    return;
+                }
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

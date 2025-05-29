@@ -1,0 +1,1 @@
+{"success": false, "error": "Error en la ejecuci\u00f3n de Ollama", "stderr": ""}

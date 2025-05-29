@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - GimnasioApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/register.css">
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container animate__animated animate__fadeInUp">
+                    <div class="form-header">
+                        <h1><i class="fas fa-dumbbell me-2"></i>ÚNETE A GIMNASIOAPP</h1>
+                        <p class="mb-0">Comienza tu viaje fitness hoy mismo</p>
+                    </div>
+
+                    <div class="form-body">
+                        <ul class="nav nav-tabs" id="userTypeTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
+                                    data-bs-target="#general" type="button" role="tab">Información Básica</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="type-tab" data-bs-toggle="tab" data-bs-target="#type"
+                                    type="button" role="tab">Tipo de Usuario</button>
+                            </li>
+                        </ul>
+
+                        <!-- Mensajes de error y éxito -->
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error:</strong> <%= error %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>
+                        <% if (typeof success !== 'undefined' && success) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Éxito:</strong> <%= success %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>
+                        
+                        <form action="/frontend/registro" method="POST" id="registrationForm" novalidate>
+                            <div class="tab-content">
+                                <!-- Sección de información básica -->
+                                <div class="tab-pane fade show active" id="general" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group input-icon">
+                                                <i class="fas fa-user"></i>
+                                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                                    placeholder="Nombre" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group input-icon">
+                                                <i class="fas fa-user"></i>
+                                                <input type="text" class="form-control" id="apellido" name="apellido"
+                                                    placeholder="Apellido" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group input-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" class="form-control" id="correo" name="correo"
+                                            placeholder="Correo electrónico" required>
+                                    </div>
+
+                                    <div class="form-group input-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" class="form-control" id="contrasenia" name="contrasenia"
+                                            placeholder="Contraseña" required>
+                                        <span class="password-toggle" onclick="togglePassword('contrasenia')">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group input-icon">
+                                                <i class="fas fa-phone"></i>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono"
+                                                    placeholder="Teléfono" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group input-icon">
+                                                <i class="fas fa-birthday-cake"></i>
+                                                <input type="date" class="form-control" id="fechaNacimiento"
+                                                    name="fechaNacimiento" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="genero" class="form-label">Género</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="genero"
+                                                    id="masculino" value="masculino" required>
+                                                <label class="form-check-label" for="masculino">
+                                                    <i class="fas fa-male me-1"></i> Masculino
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="genero" id="femenino"
+                                                    value="femenino">
+                                                <label class="form-check-label" for="femenino">
+                                                    <i class="fas fa-female me-1"></i> Femenino
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary" disabled>
+                                            <i class="fas fa-arrow-left me-1"></i> Anterior
+                                        </button>
+                                        <button type="button" class="btn btn-primary next-btn" data-next="type">
+                                            Siguiente <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Sección de tipo de usuario -->
+                                <div class="tab-pane fade" id="type" role="tabpanel">
+                                    <div class="form-group">
+                                        <label for="tipoUsuario" class="form-label">Tipo de Usuario</label>
+                                        <select class="form-select" id="tipoUsuario" name="tipoUsuario" required>
+                                            <option value="" selected disabled>Seleccione su tipo de usuario</option>
+                                            <option value="cliente">Cliente</option>
+                                            <option value="entrenador">Entrenador</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Campos específicos de Cliente -->
+                                    <div id="camposCliente" class="user-type-section" style="display: none;">
+                                        <h3><i class="fas fa-user me-2"></i>Datos de Cliente</h3>
+                                        <div class="form-group">
+                                            <label for="objetivo">Objetivo Fitness</label>
+                                            <select class="form-select" id="objetivo" name="objetivo">
+                                                <option value="" selected disabled>Seleccione su objetivo</option>
+                                                <option value="perdida_peso">Pérdida de peso</option>
+                                                <option value="ganancia_muscular">Ganancia muscular</option>
+                                                <option value="tonificacion">Tonificación</option>
+                                                <option value="mejora_rendimiento">Mejora de rendimiento</option>
+                                                <option value="salud_general">Salud general</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nivel">Nivel Actual</label>
+                                            <select class="form-select" id="nivel" name="nivel">
+                                                <option value="" selected disabled>Seleccione su nivel</option>
+                                                <option value="principiante">Principiante</option>
+                                                <option value="intermedio">Intermedio</option>
+                                                <option value="avanzado">Avanzado</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="observaciones">Observaciones Médicas</label>
+                                            <textarea class="form-control" id="observaciones" name="observaciones"
+                                                rows="3"
+                                                placeholder="Lesiones previas, condiciones médicas, etc."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campos específicos de Entrenador -->
+                                    <div id="camposEntrenador" class="user-type-section" style="display: none;">
+                                        <h3><i class="fas fa-certificate me-2"></i>Datos de Entrenador</h3>
+                                        <div class="form-group">
+                                            <label for="codigoVerificacion" class="required-label">Código de Verificación</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                                <input type="text" class="form-control" id="codigoVerificacion"
+                                                    name="codigoVerificacion" placeholder="Ingresa el código proporcionado por el administrador">
+                                            </div>
+                                            <small class="text-muted">Este código es obligatorio y debe ser proporcionado por un administrador</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="especialidad">Especialidad</label>
+                                            <input type="text" class="form-control" id="especialidad"
+                                                name="especialidad" placeholder="Ej: Crossfit, Yoga, Hipertrofia...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="certificaciones">Certificaciones</label>
+                                            <input type="text" class="form-control" id="certificaciones"
+                                                name="certificaciones" placeholder="Separadas por comas">
+                                            <small class="text-muted">Ej: NSCA-CPT, ACE, ISSA</small>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="experienciaAnios">Años de experiencia</label>
+                                                    <input type="number" class="form-control" id="experienciaAnios"
+                                                        name="experienciaAnios" min="0" placeholder="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descripcionPerfil">Descripción de perfil</label>
+                                            <textarea class="form-control" id="descripcionPerfil"
+                                                name="descripcionPerfil" rows="3"
+                                                placeholder="Cuéntanos sobre tu enfoque de entrenamiento..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary prev-btn"
+                                            data-prev="general">
+                                            <i class="fas fa-arrow-left me-1"></i> Anterior
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-user-plus me-1"></i> Registrarse
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p>¿Ya tienes una cuenta? <a href="/frontend/login" class="login-link">Inicia sesión
+                                    aquí</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/register.js"></script>
+</body>
+
+</html>

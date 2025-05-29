@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas | GimnasioApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/clientDashboard.css">
+    <link rel="stylesheet" href="/css/citasStyles.css">
+    <style>
+        .citas-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .cita-card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cita-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .cita-header {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cita-fecha {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0d6efd;
+        }
+        
+        .cita-hora {
+            background-color: #e9ecef;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-weight: 600;
+        }
+        
+        .cita-detail {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .cita-detail-label {
+            width: 140px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .cita-estado {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 100%;
+        }
+        
+        .estado-pendiente {
+            background-color: #ffc107;
+        }
+        
+        .estado-confirmada {
+            background-color: #198754;
+        }
+        
+        .estado-cancelada {
+            background-color: #dc3545;
+        }
+        
+        .estado-completada {
+            background-color: #0dcaf0;
+        }
+        
+        .cita-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-confirmada {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-cancelada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .badge-completada {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .cita-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .no-citas {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        
+        .calendario-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+        
+        #calendario .fc-daygrid-day.fc-day-today {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+        
+        #calendario .fc-event {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="far fa-calendar-alt me-2"></i>Mis Citas</h1>
+            <a href="/clientes/<%= cliente.id %>" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+            </a>
+        </div>
+        
+        <% if (mensaje) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%= mensaje %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+        
+        <% if (error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="citas-container">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">Próximas Citas</h2>
+                        <a href="/citas/crear/<%= cliente.id %>" class="btn btn-primary">
+                            <i class="far fa-calendar-plus me-2"></i>Nueva Cita
+                        </a>
+                    </div>
+                    
+                    <% if (citas && citas.length > 0) { %>
+                        <% 
+                        // Filtrar citas futuras y ordenarlas por fecha
+                        const hoy = new Date();
+                        hoy.setHours(0, 0, 0, 0);
+                        
+                        const citasFuturas = citas.filter(cita => {
+                            const fechaCita = new Date(cita.fecha);
+                            fechaCita.setHours(0, 0, 0, 0);
+                            return fechaCita >= hoy && cita.estado !== 'Cancelada';
+                        }).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                        
+                        if (citasFuturas.length > 0) {
+                        %>
+                            <% citasFuturas.forEach(cita => { %>
+                                <div class="cita-card">
+                                    <div class="cita-estado estado-<%= cita.estado.toLowerCase() %>"></div>
+                                    <div class="cita-header">
+                                        <div class="cita-fecha">
+                                            <%= new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                        </div>
+                                        <div class="cita-hora">
+                                            <%= cita.horaInicio %> - <%= cita.horaFin %>
+                                        </div>
+                                    </div>
+                                    <div class="cita-body">
+                                        <div class="cita-detail">
+                                            <div class="cita-detail-label">Entrenador:</div>
+                                            <div class="cita-detail-value">
+                                                <%= cita.entrenadorId.usuarioId.nombre %> <%= cita.entrenadorId.usuarioId.apellido %>
+                                            </div>
+                                        </div>
+                                        <div class="cita-detail">
+                                            <div class="cita-detail-label">Tipo de cita:</div>
+                                            <div class="cita-detail-value"><%= cita.tipoCita %></div>
+                                        </div>
+                                        <div class="cita-detail">
+                                            <div class="cita-detail-label">Estado:</div>
+                                            <div class="cita-detail-value">
+                                                <span class="cita-badge badge-<%= cita.estado.toLowerCase() %>">
+                                                    <%= cita.estado %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <% if (cita.notas) { %>
+                                            <div class="cita-detail">
+                                                <div class="cita-detail-label">Notas:</div>
+                                                <div class="cita-detail-value"><%= cita.notas %></div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="cita-actions">
+                                        <a href="/citas/<%= cita._id %>" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye me-1"></i> Ver detalles
+                                        </a>
+                                        <% if (cita.estado !== 'Cancelada' && cita.estado !== 'Completada') { %>
+                                            <button class="btn btn-sm btn-outline-danger cancelarCitaBtn" data-cita-id="<%= cita._id %>">
+                                                <i class="fas fa-times me-1"></i> Cancelar
+                                            </button>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="no-citas">
+                                <i class="far fa-calendar-times mb-3" style="font-size: 48px;"></i>
+                                <h4>No tienes citas programadas</h4>
+                                <p>Programa una cita con tu entrenador para comenzar.</p>
+                                <a href="/citas/crear/<%= cliente.id %>" class="btn btn-primary mt-3">
+                                    <i class="far fa-calendar-plus me-2"></i>Programar Cita
+                                </a>
+                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <div class="no-citas">
+                            <i class="far fa-calendar-times mb-3" style="font-size: 48px;"></i>
+                            <h4>No tienes citas programadas</h4>
+                            <p>Programa una cita con tu entrenador para comenzar.</p>
+                            <a href="/citas/crear/<%= cliente.id %>" class="btn btn-primary mt-3">
+                                <i class="far fa-calendar-plus me-2"></i>Programar Cita
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <% if (citas && citas.length > 0) { %>
+                    <div class="citas-container">
+                        <h3 class="mb-4">Historial de Citas</h3>
+                        <% 
+                        // Filtrar citas pasadas o canceladas
+                        const hoy = new Date();
+                        hoy.setHours(0, 0, 0, 0);
+                        
+                        const citasPasadas = citas.filter(cita => {
+                            const fechaCita = new Date(cita.fecha);
+                            fechaCita.setHours(0, 0, 0, 0);
+                            return fechaCita < hoy || cita.estado === 'Cancelada' || cita.estado === 'Completada';
+                        }).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                        
+                        if (citasPasadas.length > 0) {
+                        %>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Tipo</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% citasPasadas.forEach(cita => { %>
+                                            <tr>
+                                                <td><%= new Date(cita.fecha).toLocaleDateString() %></td>
+                                                <td><%= cita.horaInicio %> - <%= cita.horaFin %></td>
+                                                <td><%= cita.tipoCita %></td>
+                                                <td>
+                                                    <span class="cita-badge badge-<%= cita.estado.toLowerCase() %>">
+                                                        <%= cita.estado %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="/citas/<%= cita._id %>" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <p class="text-center text-muted">No hay historial de citas.</p>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="calendario-container">
+                    <h3 class="mb-4">Calendario</h3>
+                    <div id="calendario"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para cancelar cita -->
+    <div class="modal fade" id="cancelarCitaModal" tabindex="-1" aria-labelledby="cancelarCitaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelarCitaModalLabel">Cancelar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas cancelar esta cita?</p>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, mantener cita</button>
+                    <button type="button" class="btn btn-danger" id="confirmarCancelarBtn">Sí, cancelar cita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar FullCalendar
+            const calendarEl = document.getElementById('calendario');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                events: [
+                    <% if (citas && citas.length > 0) { %>
+                        <% citas.forEach(cita => { %>
+                            {
+                                title: '<%= cita.tipoCita %>',
+                                start: '<%= cita.fecha.toISOString().split('T')[0] %>T<%= cita.horaInicio %>:00',
+                                end: '<%= cita.fecha.toISOString().split('T')[0] %>T<%= cita.horaFin %>:00',
+                                url: '/citas/<%= cita._id %>',
+                                backgroundColor: '<%= cita.estado === "Pendiente" ? "#ffc107" : cita.estado === "Confirmada" ? "#198754" : cita.estado === "Cancelada" ? "#dc3545" : "#0dcaf0" %>'
+                            },
+                        <% }); %>
+                    <% } %>
+                ],
+                eventClick: function(info) {
+                    if (info.event.url) {
+                        info.jsEvent.preventDefault();
+                        window.location.href = info.event.url;
+                    }
+                }
+            });
+            calendar.render();
+            
+            // Configurar botones de cancelación de cita
+            const cancelarBtns = document.querySelectorAll('.cancelarCitaBtn');
+            const cancelarModal = new bootstrap.Modal(document.getElementById('cancelarCitaModal'));
+            const confirmarBtn = document.getElementById('confirmarCancelarBtn');
+            let citaIdACancelar;
+            
+            cancelarBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    citaIdACancelar = this.getAttribute('data-cita-id');
+                    cancelarModal.show();
+                });
+            });
+            
+            confirmarBtn.addEventListener('click', function() {
+                if (citaIdACancelar) {
+                    // Cambiar estado a "Cancelada"
+                    fetch(`/citas/${citaIdACancelar}/estado`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ estado: 'Cancelada' })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Recargar la página para ver los cambios
+                            window.location.reload();
+                        } else {
+                            throw new Error('Error al cancelar la cita');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al cancelar la cita. Inténtalo de nuevo.');
+                    });
+                }
+                cancelarModal.hide();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard del Cliente - GimnasioApp</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/clientDashboard.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+    <link rel="stylesheet" href="/css/chatia.css">
+    <!-- Estilos para el botón flotante de IA -->
+    <style>
+        .floating-ia-button {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4e54c8, #8f94fb);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+        
+        .floating-ia-button i {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        
+        .floating-ia-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .floating-ia-button:active {
+            transform: scale(0.95);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(78, 84, 200, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 84, 200, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>¡BIENVENIDO, <span class="username">
+                <%= nombre %>
+            </span>!</h1>
+        <div class="welcome-text">Tu centro de control fitness</div>
+        <div class="motivation-text">"El éxito comienza con la decisión de intentarlo. Cada entrenamiento te acerca a tu
+            mejor versión."</div>
+
+        <nav>
+            <ul>
+                <li><a href="/clientes/<%= idCliente %>/rutinas"><i class="fas fa-dumbbell"></i> Mis Rutinas</a></li>
+                <li><a href="/clientes/<%= idCliente %>/progreso"><i class="fas fa-chart-line"></i> Mi Progreso</a></li>
+                <li><a href="/clientes/<%= idCliente %>/dietas"><i class="fas fa-utensils"></i> Mis Dietas</a></li>
+                <li><a href="/citas/cliente/<%= idCliente %>"><i class="far fa-calendar-check"></i> Mis Citas</a></li>
+                <li>
+                    <a href="/mientrenador/<%= idCliente %>/entrenador" class="nav-link-with-badge">
+                        <i class="fas fa-user-tie"></i> Mi Entrenador
+                    </a>
+                </li>
+                <li>
+                    <a href="/chat/cliente-dashboard/<%= idCliente %>" class="nav-link-with-badge">
+                        <i class="fas fa-comments"></i> Chat
+                        <span class="chat-badge" id="chat-notification-badge" style="display: none;">0</span>
+                    </a>
+                </li>
+                <li><a href="/ejercicios"><i class="fas fa-user-tie"></i> Mis Ejercicios</a></li>
+                <li><a href="#" id="gimnasioInfoBtn"><i class="fas fa-dumbbell"></i> Mi Gimnasio</a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-grid">
+            <div class="card progress-card">
+                <h2><i class="fas fa-trophy"></i> Tu Progreso</h2>
+                <p>Revisa tus increíbles avances y mantente motivado para alcanzar tus objetivos fitness.</p>
+
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <h3>Días consecutivos</h3>
+                        <p>12</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Peso actual</h3>
+                        <p>75.4 kg</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>% Grasa</h3>
+                        <p>18.2%</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>IMC</h3>
+                        <p id="imc-value">23.1</p>
+                        <button id="calcular-imc-btn" class="btn btn-sm" style="margin-top: 5px; font-size: 0.8rem; padding: 3px 8px;">Calcular IMC</button>
+                    </div>
+                </div>
+
+                <a href="/clientes/<%= idCliente %>/progreso" class="btn"
+                    style="margin-top: 20px; align-self: flex-start;">
+                    Ver detalles completos
+                </a>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-dumbbell"></i> Mis Rutinas</h2>
+                <% if (typeof rutinas !== 'undefined' && rutinas && rutinas.length > 0) { %>
+                    <p>Tu entrenador te ha asignado <%= rutinas.length %> rutina(s).</p>
+                    <p><strong>Rutina actual:</strong> <%= rutinas[0].nombre %></p>
+                <% } else { %>
+                    <p>Tu entrenador aún no te ha asignado ninguna rutina.</p>
+                <% } %>
+                <a href="/rutinas/cliente/<%= idCliente %>" class="btn">Ver mis rutinas</a>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-user-tie"></i> Mi Entrenador</h2>
+                <% if (typeof entrenador !== 'undefined' && entrenador) { %>
+                    <p>Tu entrenador asignado es <strong><%= entrenador.nombre %> <%= entrenador.apellido %></strong>.</p>
+                    <p><strong>Especialidad:</strong> <%= entrenador.especialidad || 'General' %></p>
+                    <p><strong>Contacto:</strong> <%= entrenador.correo %></p>
+                    <div class="action-buttons" style="margin-top: 15px;">
+                        <a href="/chat/cliente/<%= idCliente %>" class="btn" style="background-color: #4CAF50; color: white;">
+                            <i class="fas fa-comments"></i> Chat con mi entrenador
+                        </a>
+                    </div>
+                    <a href="/mientrenador/<%= idCliente %>/entrenador" class="btn">Ver perfil completo</a>
+                <% } else { %>
+                    <p>Aún no tienes un entrenador asignado. Selecciona uno para comenzar tu entrenamiento personalizado.</p>
+                    <button id="seleccionarEntrenadorBtn" class="btn">Seleccionar Entrenador</button>
+                <% } %>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-utensils"></i> Plan Nutricional</h2>
+                <% if (typeof dietas !== 'undefined' && dietas && dietas.length > 0) { %>
+                    <p>Tienes <strong><%= dietas.length %></strong> plan(es) nutricional(es) asignado(s) por tu entrenador.</p>
+                    <p><strong>Plan actual:</strong> <%= dietas[0].nombre %></p>
+                    <% if (dietas[0].descripcion) { %>
+                        <p><small><%= dietas[0].descripcion.substring(0, 80) %><%= dietas[0].descripcion.length > 80 ? '...' : '' %></small></p>
+                    <% } %>
+                <% } else { %>
+                    <p>Consulta las recomendaciones alimenticias personalizadas para potenciar tus resultados.</p>
+                    <p>Tu entrenador aún no te ha asignado ningún plan nutricional.</p>
+                <% } %>
+                <a href="/clientes/<%= idCliente %>/dietas" class="btn">Ver mis dietas</a>
+            </div>
+
+            <div class="card">
+                <h2><i class="far fa-calendar-check"></i> Mis Citas</h2>
+                <p>Programa tus próximas sesiones con tu entrenador personal.</p>
+                <% if (typeof proximasCitas !== 'undefined' && proximasCitas && proximasCitas.length > 0) { %>
+                    <p><strong>Próxima cita:</strong> <%= new Date(proximasCitas[0].fecha).toLocaleDateString() %> a las <%= proximasCitas[0].horaInicio %></p>
+                    <p><strong>Tipo de cita:</strong> <%= proximasCitas[0].tipoCita %></p>
+                <% } else { %>
+                    <p>No tienes citas programadas. ¡Programa una ahora!</p>
+                <% } %>
+                <div class="card-buttons">
+                    <a href="/citas/cliente/<%= idCliente %>" class="btn">Ver mis citas</a>
+                    <a href="/citas/crear/<%= idCliente %>" class="btn btn-primary">Programar cita</a>
+                </div>
+            </div>
+
+            <div class="card motivational-card">
+                <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                <h2>¡Tú puedes!</h2>
+                <p>"El dolor que sientes hoy será la fuerza que sentirás mañana. Cada gota de sudor es una inversión en
+                    tu futuro."</p>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-award"></i> Logros</h2>
+                <p>Has completado 8 rutinas este mes y estás en el top 20% de los clientes más consistentes.</p>
+                <a href="/clientes/<%= idCliente %>/logros" class="btn">Ver todos mis logros</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>&copy; 2025 GimnasioApp. Todos los derechos reservados.</p>
+        <p>Transformando vidas a través del fitness</p>
+    </footer>
+
+    <!-- Botón flotante de IA -->
+    <button id="floating-ia-button" class="floating-ia-button pulse">
+        <i class="fas fa-robot"></i>
+        <span>IA</span>
+    </button>
+
+    <!-- Campo oculto para el ID del cliente -->
+    <input type="hidden" id="cliente-id-hidden" value="<%= idCliente %>">
+    
+    <!-- Botón flotante de ChatIA (Visible y con estilo mejorado) -->
+    <div class="chat-ia-button">
+        <a href="/chat-rapido.html" style="text-decoration: none;">
+            <button style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #16222a; cursor: pointer;">
+                <i class="fas fa-robot" style="font-size: 24px; margin-bottom: 3px;"></i>
+                <span style="font-size: 10px; font-weight: 600;">ChatIA</span>
+            </button>
+        </a>
+    </div>
+    
+    <!-- Modal para ChatIA -->
+    <div id="chatia-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);">
+        <div class="modal-content" style="background: linear-gradient(135deg, #16222a 0%, #3a6073 100%); margin: 10% auto; padding: 0; border: none; width: 90%; max-width: 600px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-family: 'Poppins', sans-serif; height: 500px; display: flex; flex-direction: column;">
+            <div style="padding: 20px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; color: #16222a; font-weight: 600;"><i class="fas fa-robot" style="margin-right: 10px;"></i>Asistente IA</h3>
+                <span class="close" id="chatia-close" style="color: #16222a; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
+            </div>
+            <div id="chatia-messages" style="flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+                <div class="message bot" style="align-self: flex-start; background: rgba(255, 255, 255, 0.1); padding: 12px 15px; border-radius: 15px 15px 15px 0; max-width: 80%; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <p style="margin: 0; color: white;">¡Hola! Soy tu asistente de fitness. ¿En qué puedo ayudarte hoy?</p>
+                </div>
+            </div>
+            <div style="padding: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; gap: 10px;">
+                <input type="text" id="chatia-input" placeholder="Escribe tu mensaje aquí..." style="flex-grow: 1; padding: 12px 15px; border-radius: 30px; border: none; background: rgba(255, 255, 255, 0.1); color: white; outline: none;">
+                <button id="chatia-send" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <i class="fas fa-paper-plane" style="color: #16222a;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para calcular IMC -->
+    <div id="imc-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);">
+        <div class="modal-content" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 10% auto; padding: 30px; border: none; width: 90%; max-width: 450px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #2c3e50; font-weight: 600; font-size: 1.8rem;">Calcula tu IMC</h2>
+                <span class="close" style="color: #2c3e50; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
+            </div>
+            
+            <div style="background-color: rgba(255,255,255,0.7); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <p style="margin-top: 0; color: #34495e; font-size: 0.95rem;">El Índice de Masa Corporal (IMC) es un indicador que relaciona tu peso y altura para evaluar tu estado nutricional.</p>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="peso" style="display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 500;">Peso (kg):</label>
+                    <div style="position: relative;">
+                        <input type="number" id="peso" step="0.1" min="30" max="300" style="width: 100%; padding: 12px 15px; border: 2px solid #a4b0be; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; background-color: white;">
+                        <span style="position: absolute; right: 15px; top: 12px; color: #7f8c8d;">kg</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label for="altura" style="display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 500;">Altura (cm):</label>
+                    <div style="position: relative;">
+                        <input type="number" id="altura" step="1" min="100" max="250" style="width: 100%; padding: 12px 15px; border: 2px solid #a4b0be; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; background-color: white;">
+                        <span style="position: absolute; right: 15px; top: 12px; color: #7f8c8d;">cm</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="calcular-btn" class="btn" style="width: 100%; padding: 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%); color: white; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);">Calcular mi IMC</button>
+            
+            <div id="resultado-imc" style="display: none; margin-top: 25px; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <div style="margin-bottom: 10px;">
+                    <span style="font-size: 2.5rem; font-weight: 700; line-height: 1;" id="valor-imc"></span>
+                </div>
+                <p id="categoria-imc" style="margin: 10px 0 0; font-size: 1.1rem; font-weight: 500;"></p>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #555;">Recuerda que el IMC es solo un indicador. Consulta con un profesional para una evaluación completa.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar entrenador -->
+    <div id="entrenador-modal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);">
+        <div class="modal-content" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 10% auto; padding: 30px; border: none; width: 90%; max-width: 600px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #2c3e50; font-weight: 600; font-size: 1.8rem;">Selecciona tu Entrenador</h2>
+                <span class="close-entrenador-modal" style="color: #2c3e50; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
+            </div>
+            
+            <div style="background-color: rgba(255,255,255,0.7); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <p style="margin-top: 0; color: #34495e; font-size: 0.95rem;">Selecciona un entrenador para comenzar tu entrenamiento personalizado. Esta selección es permanente y no podrás cambiarla después.</p>
+                
+                <div id="entrenadores-container" style="margin-top: 20px;">
+                    <p>Cargando entrenadores disponibles...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/clientDashboard.js"></script>
+    
+    <script>
+        // Funcionalidad para el modal de selección de entrenador
+        document.addEventListener('DOMContentLoaded', function() {
+            const seleccionarBtn = document.getElementById('seleccionarEntrenadorBtn');
+            const entrenadorModal = document.getElementById('entrenador-modal');
+            const closeEntrenadorModal = document.querySelector('.close-entrenador-modal');
+            const entrenadoresContainer = document.getElementById('entrenadores-container');
+            
+            if (seleccionarBtn) {
+                seleccionarBtn.addEventListener('click', function() {
+                    entrenadorModal.style.display = 'block';
+                    cargarEntrenadores();
+                });
+            }
+            
+            if (closeEntrenadorModal) {
+                closeEntrenadorModal.addEventListener('click', function() {
+                    entrenadorModal.style.display = 'none';
+                });
+            }
+            
+            // Cerrar modal al hacer clic fuera de él
+            window.addEventListener('click', function(event) {
+                if (event.target === entrenadorModal) {
+                    entrenadorModal.style.display = 'none';
+                }
+            });
+            
+            // Función para cargar entrenadores disponibles
+            function cargarEntrenadores() {
+                fetch('/api/entrenadores/listar')
+                    .then(response => response.json())
+                    .then(entrenadores => {
+                        if (entrenadores.length === 0) {
+                            entrenadoresContainer.innerHTML = '<p>No hay entrenadores disponibles en este momento.</p>';
+                            return;
+                        }
+                        
+                        let html = '<div class="entrenadores-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">';
+                        
+                        entrenadores.forEach(entrenador => {
+                            const nombre = entrenador.usuario ? `${entrenador.usuario.nombre} ${entrenador.usuario.apellido}` : 'Entrenador';
+                            const especialidad = entrenador.especialidad || 'Entrenamiento general';
+                            const experiencia = entrenador.experienciaAnios ? `${entrenador.experienciaAnios} años de experiencia` : '';
+                            
+                            html += `
+                                <div class="entrenador-card" style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                    <div style="font-weight: bold; font-size: 1.2rem; margin-bottom: 10px;">${nombre}</div>
+                                    <div style="color: #666; margin-bottom: 5px;">Especialidad: ${especialidad}</div>
+                                    <div style="color: #666; margin-bottom: 15px;">${experiencia}</div>
+                                    <button 
+                                        class="seleccionar-entrenador-btn" 
+                                        data-entrenador-id="${entrenador._id}"
+                                        style="background: #0d6efd; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%;"
+                                    >
+                                        Seleccionar
+                                    </button>
+                                </div>
+                            `;
+                        });
+                        
+                        html += '</div>';
+                        entrenadoresContainer.innerHTML = html;
+                        
+                        // Agregar event listeners a los botones de selección
+                        document.querySelectorAll('.seleccionar-entrenador-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const entrenadorId = this.getAttribute('data-entrenador-id');
+                                seleccionarEntrenador(entrenadorId);
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar entrenadores:', error);
+                        entrenadoresContainer.innerHTML = '<p>Error al cargar entrenadores. Inténtalo de nuevo más tarde.</p>';
+                    });
+            }
+            
+            // Función para seleccionar un entrenador
+            function seleccionarEntrenador(entrenadorId) {
+                const clienteId = '<%= idCliente %>';
+                
+                fetch(`/api/clientes/${clienteId}/seleccionar-entrenador`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ entrenadorId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || 'Error al seleccionar entrenador'); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Entrenador seleccionado correctamente. La página se recargará para mostrar los cambios.');
+                    window.location.reload();
+                })
+                .catch(error => {
+                    alert(error.message || 'Error al seleccionar entrenador. Inténtalo de nuevo más tarde.');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Modal para información del gimnasio -->
+    <div id="gimnasioModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);">
+        <div style="background: white; margin: 5% auto; padding: 20px; width: 90%; max-width: 800px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2b5876; padding-bottom: 10px; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #2b5876; font-weight: 700;">Información del Gimnasio</h2>
+                <span class="close" style="color: #2c3e50; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s;">&times;</span>
+            </div>
+            <div id="gimnasioModalContent" style="max-height: 70vh; overflow-y: auto; color: #333;">
+                <!-- Contenido cargado dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- Sistema de Notificaciones -->
+    <script src="/js/notifications.js"></script>
+    <script>
+        // Pasar el ID del cliente al sistema de notificaciones
+        window.userId = '<%= idCliente %>';
+
+        // Modal de información del gimnasio
+        document.addEventListener('DOMContentLoaded', function() {
+            const gimnasioModal = document.getElementById('gimnasioModal');
+            const gimnasioModalContent = document.getElementById('gimnasioModalContent');
+            const gimnasioInfoBtn = document.getElementById('gimnasioInfoBtn');
+            const closeBtn = gimnasioModal.querySelector('.close');
+
+            gimnasioInfoBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Cargar la información del gimnasio
+                fetch('/gimnasio/info/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Crear el contenido HTML
+                        let html = `
+                            <div style="text-align: center; margin-bottom: 30px; background: linear-gradient(to right, #2b5876, #4e4376); padding: 20px; border-radius: 10px; color: white;">
+                                <h3 style="margin-bottom: 10px; font-weight: 700; font-size: 28px;">${data.nombre}</h3>
+                                <p style="font-style: italic; font-size: 16px;">${data.slogan}</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 30px; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                                <h4 style="color: #2b5876; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600;">
+                                    <i class="fas fa-info-circle" style="color: #00c6ff; margin-right: 10px;"></i>Sobre Nosotros
+                                </h4>
+                                <p style="color: #333; line-height: 1.6;">${data.descripcion}</p>
+                            </div>
+                            
+                            <div style="display: flex; flex-wrap: wrap; margin-bottom: 30px;">
+                                <div style="flex: 1; min-width: 250px; margin-right: 20px; margin-bottom: 20px; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                                    <h4 style="color: #2b5876; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600;">
+                                        <i class="fas fa-map-marker-alt" style="color: #00c6ff; margin-right: 10px;"></i>Ubicación
+                                    </h4>
+                                    <p style="color: #333; line-height: 1.6;">
+                                        ${data.direccion.calle} ${data.direccion.numero}<br>
+                                        ${data.direccion.colonia}<br>
+                                        ${data.direccion.ciudad}, ${data.direccion.estado}<br>
+                                        C.P. ${data.direccion.codigoPostal}
+                                    </p>
+                                    
+                                    <!-- Google Maps -->
+                                    <div style="margin-top: 15px; width: 100%; height: 200px; border-radius: 10px; overflow: hidden;">
+                                        <iframe 
+                                            src="${data.direccion.googleMapsUrl}" 
+                                            width="100%" 
+                                            height="100%" 
+                                            style="border:0;" 
+                                            allowfullscreen="" 
+                                            loading="lazy">
+                                        </iframe>
+                                    </div>
+                                </div>
+                                
+                                <div style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                                    <h4 style="color: #2b5876; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600;">
+                                        <i class="fas fa-clock" style="color: #00c6ff; margin-right: 10px;"></i>Horarios
+                                    </h4>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Lunes</span>
+                                        <span>${data.horarios.lunes}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Martes</span>
+                                        <span>${data.horarios.martes}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Miércoles</span>
+                                        <span>${data.horarios.miercoles}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Jueves</span>
+                                        <span>${data.horarios.jueves}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Viernes</span>
+                                        <span>${data.horarios.viernes}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Sábado</span>
+                                        <span>${data.horarios.sabado}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #333;">
+                                        <span style="font-weight: 600;">Domingo</span>
+                                        <span>${data.horarios.domingo}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 30px; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                                <h4 style="color: #2b5876; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600;">
+                                    <i class="fas fa-tag" style="color: #00c6ff; margin-right: 10px;"></i>Planes y Precios
+                                </h4>
+                                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                    ${data.planes.map(plan => `
+                                        <div style="flex: 1; min-width: 250px; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); ${plan.destacado ? 'border: 2px solid #00c6ff; transform: scale(1.03);' : ''}">
+                                            ${plan.destacado ? '<div style="background: #00c6ff; color: white; display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 10px; font-weight: 600;">Más Popular</div>' : ''}
+                                            <h5 style="margin-bottom: 10px; color: #2b5876; font-weight: 700;">${plan.nombre}</h5>
+                                            <div style="font-size: 1.8rem; font-weight: bold; margin-bottom: 10px; color: #333;">$${plan.precio} <span style="font-size: 0.9rem; color: #666; font-weight: normal;">/${plan.duracion}</span></div>
+                                            <p style="color: #666; margin-bottom: 15px;">${plan.descripcion}</p>
+                                            <ul style="padding-left: 20px; margin-bottom: 15px; color: #333;">
+                                                ${plan.caracteristicas.map(caracteristica => `<li style="margin-bottom: 5px;"><i class="fas fa-check" style="color: #00c6ff; margin-right: 5px;"></i>${caracteristica}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                                <h4 style="color: #2b5876; border-bottom: 2px solid #00c6ff; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600;">
+                                    <i class="fas fa-phone" style="color: #00c6ff; margin-right: 10px;"></i>Contacto
+                                </h4>
+                                <p style="color: #333; margin-bottom: 10px;"><i class="fas fa-phone" style="width: 25px; color: #00c6ff;"></i> ${data.contacto.telefono}</p>
+                                <p style="color: #333; margin-bottom: 10px;"><i class="fas fa-envelope" style="width: 25px; color: #00c6ff;"></i> ${data.contacto.email}</p>
+                                ${data.contacto.whatsapp ? `<p style="color: #333; margin-bottom: 10px;"><i class="fab fa-whatsapp" style="width: 25px; color: #25D366;"></i> ${data.contacto.whatsapp}</p>` : ''}
+                                <div style="margin-top: 20px;">
+                                    ${data.redesSociales && data.redesSociales.facebook ? `<a href="${data.redesSociales.facebook}" target="_blank" style="color: #3b5998; font-size: 1.8rem; margin-right: 20px;"><i class="fab fa-facebook-square"></i></a>` : ''}
+                                    ${data.redesSociales && data.redesSociales.instagram ? `<a href="${data.redesSociales.instagram}" target="_blank" style="color: #e1306c; font-size: 1.8rem; margin-right: 20px;"><i class="fab fa-instagram"></i></a>` : ''}
+                                    ${data.redesSociales && data.redesSociales.twitter ? `<a href="${data.redesSociales.twitter}" target="_blank" style="color: #1da1f2; font-size: 1.8rem; margin-right: 20px;"><i class="fab fa-twitter-square"></i></a>` : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                        gimnasioModalContent.innerHTML = html;
+                        gimnasioModal.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar la información del gimnasio:', error);
+                        gimnasioModalContent.innerHTML = '<p>Error al cargar la información del gimnasio. Inténtalo de nuevo más tarde.</p>';
+                        gimnasioModal.style.display = 'block';
+                    });
+            });
+
+            // Cerrar el modal
+            closeBtn.addEventListener('click', function() {
+                gimnasioModal.style.display = 'none';
+            });
+
+            // Cerrar el modal al hacer clic fuera del contenido
+            window.addEventListener('click', function(event) {
+                if (event.target === gimnasioModal) {
+                    gimnasioModal.style.display = 'none';
+                }
+            });
+        });
+
+        // Funcionalidad para el chat con IA (Ollama)
+        const chatIABtn = document.getElementById('chat-ia-btn');
+        const floatingIABtn = document.getElementById('floating-ia-button');
+        const chatIAModal = document.getElementById('chatia-modal');
+        const chatIAClose = document.getElementById('chatia-close');
+        const chatIAInput = document.getElementById('chatia-input');
+        const chatIASend = document.getElementById('chatia-send');
+        const chatIAMessages = document.getElementById('chatia-messages');
+        const clienteId = '<%= idCliente %>';
+        
+        // Función para abrir el modal de chat
+        function abrirChatIA() {
+            chatIAModal.style.display = 'block';
+            // Hacer scroll hasta el final de los mensajes
+            chatIAMessages.scrollTop = chatIAMessages.scrollHeight;
+            // Enfocar el input
+            setTimeout(() => chatIAInput.focus(), 300);
+            // Quitar la animación de pulso del botón flotante
+            floatingIABtn.classList.remove('pulse');
+        }
+        
+        // Abrir el modal de chat desde el botón en el dashboard
+        chatIABtn.addEventListener('click', abrirChatIA);
+        
+        // Abrir el modal de chat desde el botón flotante - Ahora usa Ollama
+        floatingIABtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // En ollamaChat.js ya se maneja abrir el modal de Ollama cuando se hace clic en el botón
+            // Este código está aquí para asegurar que el botón funcione independientemente
+            const ollamaModal = document.getElementById('ollama-modal');
+            if (ollamaModal) {
+                ollamaModal.style.display = 'block';
+                const ollamaInput = document.getElementById('ollama-input');
+                if (ollamaInput) ollamaInput.focus();
+            } else {
+                // Si el modal de Ollama no existe, abre el chat IA original como fallback
+                abrirChatIA();
+            }
+        });
+        
+        // Cerrar el modal
+        chatIAClose.addEventListener('click', function() {
+            chatIAModal.style.display = 'none';
+        });
+        
+        // Cerrar el modal al hacer clic fuera del contenido
+        window.addEventListener('click', function(event) {
+            if (event.target === chatIAModal) {
+                chatIAModal.style.display = 'none';
+            }
+        });
+        
+        // Enviar mensaje al presionar Enter
+        chatIAInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                enviarMensajeIA();
+            }
+        });
+        
+        // Enviar mensaje al hacer clic en el botón
+        chatIASend.addEventListener('click', enviarMensajeIA);
+        
+        // Respuestas directas para preguntas comunes sobre el gimnasio
+        const respuestasGimnasio = {
+            // Precios y planes
+            'cuanto cuesta': 'Tenemos los siguientes planes mensuales:\n\n- PLAN BÁSICO: 100 soles/mes\n  * Acceso ilimitado a sala de musculación\n  * Horario completo\n  * Vestidores y duchas\n\n- PLAN PLUS: 150 soles/mes\n  * Todo lo del plan básico\n  * Acceso a todas las clases grupales\n  * 1 evaluación física mensual\n\n- PLAN PREMIUM: 200 soles/mes\n  * Todo lo del plan plus\n  * 2 sesiones mensuales con entrenador personal\n  * 1 evaluación nutricional mensual\n  * Acceso a la zona de hidroterapia',
+            'precio': 'Tenemos los siguientes planes mensuales:\n\n- PLAN BÁSICO: 100 soles/mes\n  * Acceso ilimitado a sala de musculación\n  * Horario completo\n  * Vestidores y duchas\n\n- PLAN PLUS: 150 soles/mes\n  * Todo lo del plan básico\n  * Acceso a todas las clases grupales\n  * 1 evaluación física mensual\n\n- PLAN PREMIUM: 200 soles/mes\n  * Todo lo del plan plus\n  * 2 sesiones mensuales con entrenador personal\n  * 1 evaluación nutricional mensual\n  * Acceso a la zona de hidroterapia',
+            'membresia': 'Tenemos los siguientes planes mensuales:\n\n- PLAN BÁSICO: 100 soles/mes\n  * Acceso ilimitado a sala de musculación\n  * Horario completo\n  * Vestidores y duchas\n\n- PLAN PLUS: 150 soles/mes\n  * Todo lo del plan básico\n  * Acceso a todas las clases grupales\n  * 1 evaluación física mensual\n\n- PLAN PREMIUM: 200 soles/mes\n  * Todo lo del plan plus\n  * 2 sesiones mensuales con entrenador personal\n  * 1 evaluación nutricional mensual\n  * Acceso a la zona de hidroterapia',
+            'plan basico': 'El PLAN BÁSICO cuesta 100 soles al mes e incluye:\n\n* Acceso ilimitado a sala de musculación\n* Horario completo\n* Vestidores y duchas',
+            'plan plus': 'El PLAN PLUS cuesta 150 soles al mes e incluye:\n\n* Todo lo del plan básico\n* Acceso a todas las clases grupales\n* 1 evaluación física mensual',
+            'plan premium': 'El PLAN PREMIUM cuesta 200 soles al mes e incluye:\n\n* Todo lo del plan plus\n* 2 sesiones mensuales con entrenador personal\n* 1 evaluación nutricional mensual\n* Acceso a la zona de hidroterapia',
+            
+            // Horarios
+            'horario': 'Nuestros horarios de atención son:\n\n- Lunes a viernes: 6:00 AM a 10:00 PM\n- Sábados: 8:00 AM a 8:00 PM\n- Domingos y feriados: 9:00 AM a 2:00 PM',
+            'hora': 'Nuestros horarios de atención son:\n\n- Lunes a viernes: 6:00 AM a 10:00 PM\n- Sábados: 8:00 AM a 8:00 PM\n- Domingos y feriados: 9:00 AM a 2:00 PM',
+            
+            // Clases
+            'clase': 'Nuestro horario de clases grupales es:\n\n- Lunes: Spinning (8:00 AM, 7:00 PM), Zumba (10:00 AM, 6:00 PM)\n- Martes: Yoga (9:00 AM), Funcional (6:00 PM, 8:00 PM)\n- Miércoles: Pilates (10:00 AM), HIIT (7:00 PM)\n- Jueves: Body Pump (9:00 AM, 7:00 PM), Stretching (6:00 PM)\n- Viernes: Zumba (10:00 AM), Boxeo (7:00 PM)\n- Sábado: Yoga (10:00 AM), Funcional (12:00 PM)\n- Domingo: Pilates (10:00 AM)',
+            'yoga': 'Las clases de yoga son:\n\n- Martes: 9:00 AM\n- Sábado: 10:00 AM\n\nEstas clases tienen capacidad para 15 personas y están incluidas en los planes Plus y Premium.',
+            
+            // Formas de pago
+            'pago': 'Aceptamos las siguientes formas de pago:\n\n- Efectivo\n- Tarjetas de crédito/débito (Visa, Mastercard, American Express)\n- Transferencia bancaria\n- Yape o Plin\n- Débito automático (para planes trimestrales o anuales)',
+            
+            // Inscripción
+            'inscripcion': 'Para inscribirte necesitas:\n\n- Documento de identidad (DNI o pasaporte)\n- Comprobante de domicilio\n- Pago de inscripción: 50 soles (incluye carnet de socio y evaluación física inicial)\n\nActualmente tenemos una promoción 2x1 en inscripciones para nuevos miembros (válida hasta fin de mes).'
+        };
+        
+        // Función para enviar mensaje al servidor
+        function enviarMensajeIA() {
+            const mensaje = chatIAInput.value.trim();
+            
+            if (!mensaje) return;
+            
+            chatIAInput.value = '';
+            
+            // Añadir mensaje del usuario al chat
+            agregarMensajeChat(mensaje, 'user');
+            
+            // Verificar si es una pregunta sobre precios u otra información del gimnasio
+            const mensajeLower = mensaje.toLowerCase();
+            let respuestaDirecta = null;
+            let nivelInteres = { nivel: 'verde', emoji: '🟢', descripcion: 'Interés general' };
+            
+            // Buscar coincidencias en las respuestas directas
+            for (const [clave, respuesta] of Object.entries(respuestasGimnasio)) {
+                if (mensajeLower.includes(clave)) {
+                    respuestaDirecta = respuesta;
+                    
+                    // Determinar nivel de interés
+                    if (['precio', 'cuanto cuesta', 'membresia', 'pago', 'inscripcion'].some(k => clave.includes(k))) {
+                        nivelInteres = { nivel: 'rojo', emoji: '🔴', descripcion: 'Alto interés - Pregunta por precios, pagos o inscripción' };
+                    } else if (['plan', 'clase', 'horario', 'yoga'].some(k => clave.includes(k))) {
+                        nivelInteres = { nivel: 'amarillo', emoji: '🟡', descripcion: 'Interés medio - Pregunta por planes o clases' };
+                    }
+                    
+                    break;
+                }
+            }
+            
+            if (respuestaDirecta) {
+                // Si encontramos una respuesta directa, la mostramos inmediatamente
+                console.log('Usando respuesta directa para:', mensajeLower);
+                setTimeout(() => {
+                    agregarMensajeChat(respuestaDirecta, 'bot', nivelInteres);
+                    
+                    // Si el nivel de interés es rojo (alto), mostrar notificación
+                    if (nivelInteres.nivel === 'rojo') {
+                        console.log('Cliente con alto interés detectado:', nivelInteres.descripcion);
+                    }
+                }, 1000); // Pequeño retraso para simular procesamiento
+            } else {
+                // Si no hay respuesta directa, usar el servidor
+                // Mostrar indicador de carga
+                const loadingId = mostrarCargando();
+                
+                // Enviar mensaje al servidor
+                fetch('/api/chatia/mensaje', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mensaje, clienteId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error en la comunicación con el servicio de IA: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Quitar indicador de carga
+                    quitarCargando(loadingId);
+                    
+                    // Añadir respuesta de la IA con el indicador de interés (semáforo)
+                    agregarMensajeChat(data.respuesta, 'bot', data.interes);
+                    
+                    // Si el nivel de interés es rojo (alto), mostrar notificación al administrador
+                    if (data.interes && data.interes.nivel === 'rojo') {
+                        console.log('Cliente con alto interés detectado:', data.interes.descripcion);
+                    }
+                })
+            .catch(error => {
+                console.error('Error:', error);
+                // Quitar indicador de carga
+                quitarCargando(loadingId);
+                
+                // Mostrar mensaje de error
+                agregarMensajeChat('Lo siento, ha ocurrido un error al procesar tu solicitud. Por favor, intenta de nuevo más tarde.', 'bot error');
+            });
+        }
+        
+        // Función para añadir mensajes al chat
+        function agregarMensajeChat(texto, tipo, interes = null) {
+            const mensaje = document.createElement('div');
+            mensaje.className = `message ${tipo}`;
+            
+            // Estilos según el tipo de mensaje
+            if (tipo === 'user') {
+                mensaje.style.cssText = 'align-self: flex-end; background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2)); padding: 12px 15px; border-radius: 15px 15px 0 15px; max-width: 80%; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);';
+            } else if (tipo.includes('bot')) {
+                mensaje.style.cssText = 'align-self: flex-start; background: rgba(255, 255, 255, 0.1); padding: 12px 15px; border-radius: 15px 15px 15px 0; max-width: 80%; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); position: relative;';
+            }
+            
+            if (tipo.includes('error')) {
+                mensaje.style.borderColor = 'rgba(220, 53, 69, 0.5)';
+            }
+            
+            // Si hay indicador de interés y es un mensaje del bot, mostrar el semáforo
+            if (interes && tipo.includes('bot')) {
+                const indicador = document.createElement('div');
+                indicador.style.cssText = 'position: absolute; top: -10px; right: -10px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);';
+                
+                // Aplicar estilo según el nivel de interés
+                if (interes.nivel === 'rojo') {
+                    indicador.style.backgroundColor = '#ff4d4d'; // Rojo
+                    indicador.title = 'Alto interés - Pregunta por precios, pagos o inscripción';
+                    indicador.textContent = '🔴';
+                } else if (interes.nivel === 'amarillo') {
+                    indicador.style.backgroundColor = '#ffcc00'; // Amarillo
+                    indicador.title = 'Interés medio - Pregunta por planes o entrenadores';
+                    indicador.textContent = '🟡';
+                } else {
+                    indicador.style.backgroundColor = '#66cc66'; // Verde
+                    indicador.title = 'Interés general - Hace preguntas generales';
+                    indicador.textContent = '🟢';
+                }
+                
+                mensaje.appendChild(indicador);
+            }
+            
+            const p = document.createElement('p');
+            p.style.cssText = 'margin: 0; color: white;';
+            p.textContent = texto;
+            mensaje.appendChild(p);
+            
+            chatIAMessages.appendChild(mensaje);
+            
+            // Hacer scroll hasta el final
+            chatIAMessages.scrollTop = chatIAMessages.scrollHeight;
+        }
+        
+        // Mostrar indicador de carga
+        function mostrarCargando() {
+            const id = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = id;
+            loadingDiv.className = 'message bot loading';
+            loadingDiv.style.cssText = 'align-self: flex-start; background: rgba(255, 255, 255, 0.1); padding: 12px 15px; border-radius: 15px 15px 15px 0; max-width: 80%; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);';
+            
+            const dots = document.createElement('div');
+            dots.style.cssText = 'display: flex; gap: 5px;';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.style.cssText = 'width: 8px; height: 8px; background-color: white; border-radius: 50%; animation: pulse 1.5s infinite ease-in-out;';
+                dot.style.animationDelay = (i * 0.2) + 's';
+                dots.appendChild(dot);
+            }
+            
+            loadingDiv.appendChild(dots);
+            chatIAMessages.appendChild(loadingDiv);
+            
+            // Hacer scroll hasta el final
+            chatIAMessages.scrollTop = chatIAMessages.scrollHeight;
+            
+            return id;
+        }
+        
+        // Quitar indicador de carga
+        function quitarCargando(id) {
+            const loadingDiv = document.getElementById(id);
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+    </script>
+    <!-- Script de ChatIA -->
+    <script src="/js/chatia.js"></script>
+    <!-- Script para Ollama Chat -->
+    <script src="/js/ollamaChat.js"></script>
+</body>
+
+</html>

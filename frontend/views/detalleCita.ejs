@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Cita | GimnasioApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        .cita-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cita-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px 20px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .badge-pendiente {
+            background-color: #ffc107;
+        }
+        
+        .badge-confirmada {
+            background-color: #198754;
+        }
+        
+        .badge-cancelada {
+            background-color: #dc3545;
+        }
+        
+        .badge-completada {
+            background-color: #0dcaf0;
+        }
+        
+        .cita-header {
+            margin-bottom: 30px;
+            padding-right: 100px;
+        }
+        
+        .cita-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #0d6efd;
+        }
+        
+        .cita-date {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+        
+        .cita-info {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .cita-section {
+            margin-bottom: 20px;
+        }
+        
+        .cita-section-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .cita-detail {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .cita-label {
+            width: 140px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        .cita-value {
+            flex: 1;
+        }
+        
+        .cita-notas {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1><i class="far fa-calendar-check me-2"></i>Detalle de Cita</h1>
+                    <% if (usuario.tipo === 'cliente') { %>
+                        <a href="/citas/cliente/<%= usuario.id %>" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a Mis Citas
+                        </a>
+                    <% } else if (usuario.tipo === 'entrenador') { %>
+                        <a href="/citas/entrenador/<%= usuario.id %>" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a Gestión de Citas
+                        </a>
+                    <% } %>
+                </div>
+                
+                <% if (mensaje) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= mensaje %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                
+                <% if (error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                
+                <div class="cita-container">
+                    <div class="cita-badge badge-<%= cita.estado.toLowerCase() %>">
+                        <%= cita.estado %>
+                    </div>
+                    
+                    <div class="cita-header">
+                        <div class="cita-title"><%= cita.tipoCita %></div>
+                        <div class="cita-date">
+                            <%= new Date(cita.fecha).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                            | <%= cita.horaInicio %> - <%= cita.horaFin %>
+                        </div>
+                    </div>
+                    
+                    <div class="cita-info">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="cita-section">
+                                    <div class="cita-section-title">Cliente</div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Nombre:</div>
+                                        <div class="cita-value"><%= cita.clienteId.usuarioId.nombre %> <%= cita.clienteId.usuarioId.apellido %></div>
+                                    </div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Email:</div>
+                                        <div class="cita-value"><%= cita.clienteId.usuarioId.email %></div>
+                                    </div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Teléfono:</div>
+                                        <div class="cita-value"><%= cita.clienteId.usuarioId.telefono || 'No disponible' %></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="cita-section">
+                                    <div class="cita-section-title">Entrenador</div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Nombre:</div>
+                                        <div class="cita-value"><%= cita.entrenadorId.usuarioId.nombre %> <%= cita.entrenadorId.usuarioId.apellido %></div>
+                                    </div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Email:</div>
+                                        <div class="cita-value"><%= cita.entrenadorId.usuarioId.email %></div>
+                                    </div>
+                                    <div class="cita-detail">
+                                        <div class="cita-label">Teléfono:</div>
+                                        <div class="cita-value"><%= cita.entrenadorId.usuarioId.telefono || 'No disponible' %></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cita-section">
+                        <div class="cita-section-title">Detalles de la Cita</div>
+                        <div class="cita-detail">
+                            <div class="cita-label">Tipo:</div>
+                            <div class="cita-value"><%= cita.tipoCita %></div>
+                        </div>
+                        <div class="cita-detail">
+                            <div class="cita-label">Fecha:</div>
+                            <div class="cita-value"><%= new Date(cita.fecha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+                        </div>
+                        <div class="cita-detail">
+                            <div class="cita-label">Horario:</div>
+                            <div class="cita-value"><%= cita.horaInicio %> - <%= cita.horaFin %></div>
+                        </div>
+                        <div class="cita-detail">
+                            <div class="cita-label">Estado:</div>
+                            <div class="cita-value">
+                                <span class="badge rounded-pill text-bg-<%= 
+                                    cita.estado === 'Pendiente' ? 'warning' : 
+                                    cita.estado === 'Confirmada' ? 'success' : 
+                                    cita.estado === 'Cancelada' ? 'danger' : 'info' 
+                                %>">
+                                    <%= cita.estado %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="cita-detail">
+                            <div class="cita-label">Creada el:</div>
+                            <div class="cita-value"><%= new Date(cita.createdAt).toLocaleString('es-ES') %></div>
+                        </div>
+                    </div>
+                    
+                    <% if (cita.notas) { %>
+                        <div class="cita-section">
+                            <div class="cita-section-title">Notas</div>
+                            <div class="cita-notas">
+                                <%= cita.notas %>
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                    <div class="cita-actions d-flex justify-content-between mt-4">
+                        <div>
+                            <% if (usuario.tipo === 'entrenador') { %>
+                                <% if (cita.estado === 'Pendiente') { %>
+                                    <button class="btn btn-success me-2" id="confirmarBtn">
+                                        <i class="fas fa-check me-2"></i>Confirmar Cita
+                                    </button>
+                                <% } %>
+                                <% if (cita.estado === 'Confirmada') { %>
+                                    <button class="btn btn-info me-2" id="completarBtn">
+                                        <i class="fas fa-clipboard-check me-2"></i>Marcar como Completada
+                                    </button>
+                                <% } %>
+                            <% } %>
+                        </div>
+                        
+                        <div>
+                            <% if (cita.estado !== 'Cancelada' && cita.estado !== 'Completada') { %>
+                                <button class="btn btn-danger" id="cancelarBtn">
+                                    <i class="fas fa-times me-2"></i>Cancelar Cita
+                                </button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para confirmar cambio de estado -->
+    <div class="modal fade" id="cambioEstadoModal" tabindex="-1" aria-labelledby="cambioEstadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cambioEstadoModalLabel">Cambiar Estado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="cambioEstadoBody">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarCambioBtn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = new bootstrap.Modal(document.getElementById('cambioEstadoModal'));
+            const modalTitle = document.getElementById('cambioEstadoModalLabel');
+            const modalBody = document.getElementById('cambioEstadoBody');
+            const confirmarCambioBtn = document.getElementById('confirmarCambioBtn');
+            let nuevoEstado;
+            
+            // Botón para confirmar cita
+            const confirmarBtn = document.getElementById('confirmarBtn');
+            if (confirmarBtn) {
+                confirmarBtn.addEventListener('click', function() {
+                    nuevoEstado = 'Confirmada';
+                    modalTitle.textContent = 'Confirmar Cita';
+                    modalBody.innerHTML = '<p>¿Estás seguro de que deseas confirmar esta cita?</p>';
+                    confirmarCambioBtn.textContent = 'Confirmar Cita';
+                    confirmarCambioBtn.className = 'btn btn-success';
+                    modal.show();
+                });
+            }
+            
+            // Botón para completar cita
+            const completarBtn = document.getElementById('completarBtn');
+            if (completarBtn) {
+                completarBtn.addEventListener('click', function() {
+                    nuevoEstado = 'Completada';
+                    modalTitle.textContent = 'Marcar Cita como Completada';
+                    modalBody.innerHTML = '<p>¿Confirmas que esta cita ha sido completada?</p>';
+                    confirmarCambioBtn.textContent = 'Marcar como Completada';
+                    confirmarCambioBtn.className = 'btn btn-info';
+                    modal.show();
+                });
+            }
+            
+            // Botón para cancelar cita
+            const cancelarBtn = document.getElementById('cancelarBtn');
+            if (cancelarBtn) {
+                cancelarBtn.addEventListener('click', function() {
+                    nuevoEstado = 'Cancelada';
+                    modalTitle.textContent = 'Cancelar Cita';
+                    modalBody.innerHTML = '<p>¿Estás seguro de que deseas cancelar esta cita?</p><p class="text-muted">Esta acción no se puede deshacer.</p>';
+                    confirmarCambioBtn.textContent = 'Cancelar Cita';
+                    confirmarCambioBtn.className = 'btn btn-danger';
+                    modal.show();
+                });
+            }
+            
+            // Evento para confirmar cambio de estado
+            confirmarCambioBtn.addEventListener('click', function() {
+                if (nuevoEstado) {
+                    fetch('/citas/<%= cita._id %>/estado', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ estado: nuevoEstado })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            throw new Error('Error al cambiar el estado de la cita');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al cambiar el estado de la cita. Inténtalo de nuevo.');
+                    });
+                }
+                modal.hide();
+            });
+        });
+    </script>
+</body>
+</html>

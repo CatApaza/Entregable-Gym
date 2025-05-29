@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios</title>
+    <link rel="stylesheet" href="/css/ejercicios.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Mis Ejercicios:</h1>
+
+        <form action="/api/ejercicios/crear" method="POST" class="formulario">
+            <div>
+                <label for="nombre">Nombre del ejercicio:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div>
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
+            </div>
+            <div>
+                <label for="musculoPrincipal">Músculo principal trabajado:</label>
+                <input type="text" id="musculoPrincipal" name="musculoPrincipal" required>
+            </div>
+            <div>
+                <label for="equipoNecesario">Equipo necesario:</label>
+                <input type="text" id="equipoNecesario" name="equipoNecesario" required>
+            </div>
+            <button type="submit">Agregar Ejercicio</button>
+        </form>
+
+        <hr>
+
+        <h2>Lista de Ejercicios Registrados</h2>
+        <div class="cards-container">
+            <% ejercicios.forEach(ejercicio => { %>
+                <div class="card">
+                    <h3><%= ejercicio.nombre %></h3>
+                    <p><strong>Descripción:</strong> <%= ejercicio.descripcion %></p>
+                    <p><strong>Músculo Principal:</strong> <%= ejercicio.musculoPrincipal %></p>
+                    <p><strong>Equipo Necesario:</strong> <%= ejercicio.equipoNecesario %></p>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <script src="/frontend/public/js/ejercicios.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* Estilos para el botón flotante de ChatIA */
+.chat-ia-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+}
+
+.chat-ia-button button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #16222a;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.chat-ia-button button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.chat-ia-button button i {
+    font-size: 24px;
+    margin-bottom: 3px;
+}
+
+.chat-ia-button button span {
+    font-size: 10px;
+    font-weight: 600;
+}

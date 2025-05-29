@@ -1,0 +1,70 @@
+<%- include('partials/header') %>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Asignar Plan Nutricional a Cliente</h4>
+                </div>
+                <div class="card-body">
+                    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+                        <div class="alert alert-<%= mensaje.tipo %> alert-dismissible fade show" role="alert">
+                            <%= mensaje.texto %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <div class="mb-4">
+                        <h5>Información del Plan Nutricional</h5>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= dieta.nombre %></h5>
+                                <p class="card-text"><%= dieta.descripcion || 'Sin descripción' %></p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Fecha inicio: <%= new Date(dieta.fechaInicio).toLocaleDateString() %>
+                                        <% if (dieta.fechaFin) { %>
+                                            | Fecha fin: <%= new Date(dieta.fechaFin).toLocaleDateString() %>
+                                        <% } %>
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="/dietas/<%= dieta._id %>/asignar" method="POST">
+                        <input type="hidden" name="dietaId" value="<%= dieta._id %>">
+                        <input type="hidden" name="entrenadorId" value="<%= idEntrenador %>">
+                        
+                        <div class="mb-3">
+                            <label for="clienteId" class="form-label">Seleccionar Cliente:</label>
+                            <select class="form-select" id="clienteId" name="clienteId" required>
+                                <option value="">Selecciona un cliente</option>
+                                <% if (clientes && clientes.length > 0) { %>
+                                    <% clientes.forEach(function(cliente) { %>
+                                        <option value="<%= cliente._id %>">
+                                            <%= cliente.nombre %> <%= cliente.apellido %>
+                                        </option>
+                                    <% }); %>
+                                <% } else { %>
+                                    <option value="" disabled>No tienes clientes asignados</option>
+                                <% } %>
+                            </select>
+                            <div class="form-text">Selecciona el cliente al que deseas asignar este plan nutricional.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/entrenador/dashboard" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-2"></i>Asignar Plan Nutricional
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

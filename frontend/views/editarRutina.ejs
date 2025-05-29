@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Rutina | GymApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-custom {
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+
+        .badge-custom {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: #212529;
+        }
+
+        .badge-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .form-container {
+            max-width: 100%;
+        }
+
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Main content -->
+            <div class="col-12 px-md-4 main-container">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Editar Rutina</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <a href="/frontend/entrenadores/<%= entrenador.usuarioId %>" class="btn btn-sm btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Editar Rutina Form -->
+                <div class="row">
+                    <div class="col-md-8 mx-auto mb-4">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <span><i class="fas fa-edit me-2"></i>Editar Rutina</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-container w-100">
+                                    <form id="editarRutinaForm" action="/rutinas/<%= rutina._id %>" method="POST">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="entrenadorId" value="<%= idEntrenador %>">
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre de la Rutina</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" value="<%= rutina.nombre %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">Descripción</label>
+                                            <textarea class="form-control" id="descripcion" name="descripcion" rows="2"><%= rutina.descripcion %></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="duracionSemanas" class="form-label">Duración (semanas)</label>
+                                            <input type="number" class="form-control" id="duracionSemanas" name="duracionSemanas" min="1" max="52" value="<%= rutina.duracionSemanas %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="fechaInicio" class="form-label">Fecha de inicio</label>
+                                            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" value="<%= rutina.fechaInicio ? rutina.fechaInicio.toISOString().split('T')[0] : '' %>" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="estado" class="form-label">Estado</label>
+                                            <select class="form-select" id="estado" name="estado" required>
+                                                <option value="Activa" <%= rutina.estado === 'Activa' ? 'selected' : '' %>>Activa</option>
+                                                <option value="Inactiva" <%= rutina.estado === 'Inactiva' ? 'selected' : '' %>>Inactiva</option>
+                                                <option value="Borrador" <%= rutina.estado === 'Borrador' ? 'selected' : '' %>>Borrador</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Días de entrenamiento</label>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <% 
+                                                const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+                                                diasSemana.forEach(dia => {
+                                                    const checked = rutina.diasSemana && rutina.diasSemana.includes(dia) ? 'checked' : '';
+                                                    const diaId = dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                                %>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="dia-<%= diaId %>" name="diasSemana[]" value="<%= dia %>" <%= checked %>>
+                                                    <label class="form-check-label" for="dia-<%= diaId %>"><%= dia %></label>
+                                                </div>
+                                                <% }); %>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="/frontend/entrenadores/<%= entrenador.usuarioId %>" class="btn btn-secondary">Cancelar</a>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmar cierre de sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cerrar sesión?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="/frontend/login" class="btn btn-danger">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Logout confirmation
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            logoutModal.show();
+        });
+
+        // Manejar el envío del formulario
+        document.getElementById('editarRutinaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Mostrar indicador de carga
+            const submitBtn = document.querySelector('#editarRutinaForm button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
+            submitBtn.disabled = true;
+            
+            // Obtener los datos del formulario
+            const formData = new FormData(this);
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                // Manejar los checkboxes de días de la semana
+                if (key === 'diasSemana[]') {
+                    if (!formDataObj.diasSemana) {
+                        formDataObj.diasSemana = [];
+                    }
+                    formDataObj.diasSemana.push(value);
+                } else {
+                    formDataObj[key] = value;
+                }
+            });
+            
+            // Enviar los datos mediante AJAX
+            fetch(this.action, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formDataObj)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al actualizar la rutina');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Rutina actualizada:', data);
+                
+                // Mostrar mensaje de éxito y redirigir
+                alert('Rutina actualizada con éxito');
+                window.location.href = `/frontend/entrenadores/<%= entrenador.usuarioId %>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar la rutina: ' + error.message);
+            })
+            .finally(() => {
+                // Restaurar el botón
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

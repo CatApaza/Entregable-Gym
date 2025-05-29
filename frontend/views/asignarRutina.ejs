@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Rutina | GymApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .rutina-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .btn-back {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-12">
+                <a href="/frontend/entrenadores/<%= entrenadorId %>" class="btn btn-secondary btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                </a>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <span><i class="fas fa-dumbbell me-2"></i>Asignar Rutina a Cliente</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="rutina-info">
+                            <h4>Rutina Seleccionada</h4>
+                            <p><strong>Nombre:</strong> <%= rutina.nombre %></p>
+                            <p><strong>Descripción:</strong> <%= rutina.descripcion || 'Sin descripción' %></p>
+                            <p><strong>Duración:</strong> <%= rutina.duracionSemanas %> semanas</p>
+                            <p><strong>Fecha de inicio:</strong> <%= rutina.fechaInicio ? new Date(rutina.fechaInicio).toLocaleDateString() : 'No definida' %></p>
+                        </div>
+                        
+                        <form id="asignarRutinaForm"><!-- Usaremos fetch con PUT en lugar de submit normal -->
+                            <input type="hidden" name="rutinaId" value="<%= rutina._id %>">
+                            <input type="hidden" name="entrenadorId" value="<%= entrenadorId %>">
+                            
+                            <div class="mb-3">
+                                <label for="clienteId" class="form-label">Seleccionar Cliente:</label>
+                                <select class="form-select" id="clienteId" name="clienteId" required>
+                                    <option value="">Selecciona un cliente</option>
+                                    <% if (clientes && clientes.length > 0) { %>
+                                        <% clientes.forEach(function(cliente) { %>
+                                            <option value="<%= cliente._id %>"><%= cliente.nombre %> <%= cliente.apellido %></option>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <option value="" disabled>No hay clientes disponibles</option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Asignar Rutina</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página de asignación de rutinas cargada');
+            
+            const form = document.getElementById('asignarRutinaForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const rutinaId = document.querySelector('input[name="rutinaId"]').value;
+            const entrenadorId = document.querySelector('input[name="entrenadorId"]').value;
+            
+            console.log('Datos iniciales:', {
+                rutinaId,
+                entrenadorId,
+                formAction: '/rutinas/asignar'
+            });
+            
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                console.log('Formulario enviado');
+                
+                // Deshabilitar botón para evitar múltiples envíos
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Asignando...';
+                
+                const clienteId = document.getElementById('clienteId').value;
+                if (!clienteId) {
+                    alert('Por favor, selecciona un cliente');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Asignar Rutina';
+                    return;
+                }
+                
+                const formData = new FormData(form);
+                const formDataObj = {};
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+                
+                console.log('Datos a enviar:', formDataObj);
+                
+                // Enviar solicitud mediante fetch
+                // Crear objeto con solo los datos necesarios para evitar problemas
+                const datos = {
+                    rutinaId: document.querySelector('input[name="rutinaId"]').value,
+                    clienteId: document.getElementById('clienteId').value
+                };
+                
+                console.log('Datos simplificados a enviar:', datos);
+                
+                fetch('/rutinas/asignar', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos)
+                })
+                .then(response => {
+                    console.log('Respuesta del servidor:', response.status, response.statusText);
+                    if (!response.ok) {
+                        return response.json().then(err => { 
+                            console.error('Error en la respuesta:', err);
+                            throw new Error(err.error || 'Error al asignar rutina'); 
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Respuesta exitosa:', data);
+                    alert(data.mensaje || 'Rutina asignada correctamente');
+                    window.location.href = `/frontend/entrenadores/${formDataObj.entrenadorId}`;
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    alert('Error: ' + error.message);
+                    
+                    // Restaurar botón
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Asignar Rutina';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

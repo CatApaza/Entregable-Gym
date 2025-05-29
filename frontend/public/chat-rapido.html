@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat del Gimnasio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Estilos para el indicador de interés */
+        .interest-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .interest-rojo {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: #FF3B30;
+        }
+        
+        .interest-amarillo {
+            background-color: rgba(255, 204, 0, 0.2);
+            color: #FFCC00;
+        }
+        
+        .interest-verde {
+            background-color: rgba(52, 199, 89, 0.2);
+            color: #34C759;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #16222a 0%, #3a6073 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            background: rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h2 {
+            color: #16222a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-header a {
+            color: #16222a;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .chat-header a:hover {
+            transform: translateX(-5px);
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            position: relative;
+            word-break: break-word;
+            white-space: pre-line;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border-radius: 15px 15px 0 15px;
+            color: #16222a;
+        }
+        
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px 15px 15px 0;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+        
+        .chat-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .chat-input button {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .chat-input button:hover {
+            transform: scale(1.1);
+        }
+        
+        .chat-input button i {
+            color: #16222a;
+        }
+        
+        /* Animación para los puntos de carga */
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+        
+        .loading {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .loading .dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .loading .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    </style>
+    <!-- Script para el cliente Ollama -->
+    <script src="js/ollama-client.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2><i class="fas fa-robot"></i> Asistente IA</h2>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <span id="status-indicator" style="font-size: 14px; padding: 5px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.1);">
+                    Verificando...
+                </span>
+                <button id="verify-button" style="background: rgba(255, 255, 255, 0.1); border: none; color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 14px;">
+                    Verificar Ollama
+                </button>
+                <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Volver</a>
+            </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">
+                ¡Hola! Soy tu asistente del gimnasio. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre precios, planes, horarios o promociones.
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí..." autofocus>
+            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    
+    <script>
+        // Referencias a elementos del DOM
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const statusIndicator = document.getElementById('status-indicator');
+        const verifyButton = document.getElementById('verify-button');
+        
+        // Crear instancia del cliente de Ollama
+        const ollamaClient = new OllamaClient({
+            model: 'gimnasio-app',
+            fallbackModel: 'llama3' // Usando un respaldo más simple por si acaso
+        });
+        
+        // Variable global para controlar si Ollama está disponible
+        let ollamaDisponible = false;
+        
+        // Verificar disponibilidad de Ollama al cargar la página
+        verificarOllama();
+        
+        // Añadir evento al botón de verificación
+        verifyButton.addEventListener('click', verificarOllama);
+        
+        // Función para verificar disponibilidad de Ollama
+        async function verificarOllama() {
+            try {
+                statusIndicator.textContent = 'Verificando...';
+                statusIndicator.style.background = '#ff9800';
+                
+                const disponible = await ollamaClient.checkAvailability();
+                ollamaDisponible = disponible;
+                
+                if (disponible) {
+                    statusIndicator.textContent = 'Ollama disponible';
+                    statusIndicator.style.background = '#4CAF50';
+                } else {
+                    statusIndicator.textContent = 'Ollama no disponible';
+                    statusIndicator.style.background = '#F44336';
+                }
+            } catch (error) {
+                console.error('Error al verificar Ollama:', error);
+                ollamaDisponible = false;
+                statusIndicator.textContent = 'Ollama no disponible';
+                statusIndicator.style.background = '#F44336';
+            }
+        }
+        
+        // Base de conocimiento con respuestas predefinidas
+        const respuestas = {
+            // Precios y planes
+            'precio': `Tenemos los siguientes planes mensuales:
+
+- PLAN BÁSICO: 100 soles/mes
+  * Acceso ilimitado a sala de musculación
+  * Horario completo
+  * Vestidores y duchas
+
+- PLAN PLUS: 150 soles/mes
+  * Todo lo del plan básico
+  * Acceso a todas las clases grupales
+  * 1 evaluación física mensual
+
+- PLAN PREMIUM: 200 soles/mes
+  * Todo lo del plan plus
+  * 2 sesiones mensuales con entrenador personal
+  * 1 evaluación nutricional mensual
+  * Acceso a la zona de hidroterapia`,
+            
+            'membresia': `Tenemos los siguientes planes mensuales:
+
+- PLAN BÁSICO: 100 soles/mes
+  * Acceso ilimitado a sala de musculación
+  * Horario completo
+  * Vestidores y duchas
+
+- PLAN PLUS: 150 soles/mes
+  * Todo lo del plan básico
+  * Acceso a todas las clases grupales
+  * 1 evaluación física mensual
+
+- PLAN PREMIUM: 200 soles/mes
+  * Todo lo del plan plus
+  * 2 sesiones mensuales con entrenador personal
+  * 1 evaluación nutricional mensual
+  * Acceso a la zona de hidroterapia`,
+            
+            'plan basico': `El PLAN BÁSICO cuesta 100 soles al mes e incluye:
+
+* Acceso ilimitado a sala de musculación
+* Horario completo
+* Vestidores y duchas`,
+            
+            'plan plus': `El PLAN PLUS cuesta 150 soles al mes e incluye:
+
+* Todo lo del plan básico
+* Acceso a todas las clases grupales
+* 1 evaluación física mensual`,
+            
+            'plan premium': `El PLAN PREMIUM cuesta 200 soles al mes e incluye:
+
+* Todo lo del plan plus
+* 2 sesiones mensuales con entrenador personal
+* 1 evaluación nutricional mensual
+* Acceso a la zona de hidroterapia`,
+            
+            // Horarios
+            'horario': `Nuestros horarios de atención son:
+
+- Lunes a viernes: 6:00 AM a 10:00 PM
+- Sábados: 8:00 AM a 8:00 PM
+- Domingos y feriados: 9:00 AM a 2:00 PM`,
+            
+            // Clases
+            'clase': `Nuestro horario de clases grupales es:
+
+- Lunes: Spinning (8:00 AM, 7:00 PM), Zumba (10:00 AM, 6:00 PM)
+- Martes: Yoga (9:00 AM), Funcional (6:00 PM, 8:00 PM)
+- Miércoles: Pilates (10:00 AM), HIIT (7:00 PM)
+- Jueves: Body Pump (9:00 AM, 7:00 PM), Stretching (6:00 PM)
+- Viernes: Zumba (10:00 AM), Boxeo (7:00 PM)
+- Sábado: Yoga (10:00 AM), Funcional (12:00 PM)
+- Domingo: Pilates (10:00 AM)`,
+            
+            'yoga': `Las clases de yoga son:
+
+- Martes: 9:00 AM
+- Sábado: 10:00 AM
+
+Estas clases tienen capacidad para 15 personas y están incluidas en los planes Plus y Premium.`,
+            
+            // Formas de pago
+            'pago': `Aceptamos las siguientes formas de pago:
+
+- Efectivo
+- Tarjetas de crédito/débito (Visa, Mastercard, American Express)
+- Transferencia bancaria
+- Yape o Plin
+- Débito automático (para planes trimestrales o anuales)`,
+            
+            // Inscripción
+            'inscripcion': `Para inscribirte necesitas:
+
+- Documento de identidad (DNI o pasaporte)
+- Comprobante de domicilio
+- Pago de inscripción: 50 soles (incluye carnet de socio y evaluación física inicial)
+
+Actualmente tenemos una promoción 2x1 en inscripciones para nuevos miembros (válida hasta fin de mes).`,
+
+            // Promociones
+            'promocion': `Ofertas Especiales (válidas hasta fin de mes):
+- 2x1 en inscripciones para nuevos miembros
+- Primera sesión de entrenamiento personal gratuita para nuevos miembros
+- 50% de descuento en evaluación nutricional al contratar plan trimestral o anual
+- Promoción "Trae un amigo": 20% de descuento en tu siguiente mensualidad`,
+
+            // Entrenadores
+            'entrenador': `Contamos con entrenadores certificados y especializados en diferentes áreas:
+
+- Entrenamiento de fuerza
+- Acondicionamiento físico
+- Yoga y pilates
+- Nutrición deportiva
+- Rehabilitación física
+
+Todos nuestros entrenadores tienen certificaciones internacionales y al menos 3 años de experiencia.`,
+
+            // Renovación
+            'renovacion': `La renovación de membresía se puede realizar desde 5 días antes de la fecha de vencimiento. Puedes renovar en recepción, online o configurando débito automático de tu tarjeta. Beneficios de renovación anticipada (15 días antes): 5% de descuento adicional. Renovación anual: Un mes gratis.`,
+
+            // Cancelación
+            'cancelacion': `Para cancelar tu membresía debes notificar con 7 días de anticipación, llenar el formulario de cancelación en recepción o en línea, y estar al día con los pagos. No hay penalidades por cancelación si se notifica a tiempo. Puedes congelar la membresía hasta por 30 días al año sin costo. Reembolso del 70% si cancelas dentro de los primeros 7 días de inscripción.`,
+
+            // Congelación
+            'congelacion': `Puedes congelar tu membresía temporalmente si no podrás asistir. Máximo 30 días al año. Debe solicitarse con 3 días de anticipación. No aplica a planes con descuento o promociones especiales.`,
+
+            // Respuesta por defecto
+            'default': `Estoy aquí para ayudarte con información sobre nuestro gimnasio. Puedes preguntarme sobre:
+
+- Precios y planes
+- Horarios de atención
+- Clases grupales
+- Formas de pago
+- Requisitos de inscripción
+- Promociones vigentes
+- Entrenadores
+- Renovación y cancelación de membresías
+- Congelación de membresías`
+        };
+        
+        // Palabras clave para buscar en las preguntas
+        // Clasificación de palabras clave por nivel de interés
+        const palabrasCalientes = [
+            'precio', 'costo', 'cuanto', 'cuánto', 'vale', 'tarifa', 'mensualidad', 'membresia', 'membresía', 'plan',
+            'pago', 'pagar', 'efectivo', 'tarjeta', 'inscripcion', 'inscripción', 'inscribir', 'registrar',
+            'promocion', 'promoción', 'oferta', 'descuento', 'renovacion', 'renovación', 'cancelacion', 'cancelación'
+        ];
+        
+        const palabrasTibias = [
+            'horario', 'hora', 'abierto', 'cerrado', 'clase', 'yoga', 'pilates', 'spinning', 'zumba',
+            'entrenador', 'congelacion', 'congelación', 'basico', 'básico', 'plus', 'premium'
+        ];
+        
+        // Combinamos todas las palabras clave para mantener la funcionalidad original
+        const palabrasClave = [...palabrasCalientes, ...palabrasTibias];
+        
+        // Objeto para llevar el conteo de interés por usuario
+        const contadorInteres = {};
+        
+        // Obtener el nombre del usuario logueado directamente de la sesión
+        function obtenerNombreUsuarioSesion() {
+            // Hacemos un fetch para obtener los datos del usuario de la sesión actual
+            return fetch('/api/usuario-actual')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('No se pudo obtener información del usuario');
+                    }
+                })
+                .then(data => {
+                    console.log('Datos del usuario obtenidos:', data);
+                    if (data && data.success && data.usuario) {
+                        const usuario = data.usuario;
+                        const nombreCompleto = usuario.nombre + (usuario.apellido ? ' ' + usuario.apellido : '');
+                        console.log('Nombre completo del usuario:', nombreCompleto);
+                        return nombreCompleto;
+                    } else {
+                        throw new Error('No hay información de usuario en la sesión');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener usuario de sesión:', error);
+                    // Si falla, intentamos obtener el nombre de otras fuentes
+                    return obtenerNombreAlternativo();
+                });
+        }
+        
+        // Función de respaldo para obtener el nombre de otras fuentes
+        function obtenerNombreAlternativo() {
+            // 1. Verificar si hay un elemento con ID 'usuario-nombre' 
+            // (común en muchas aplicaciones para mostrar el nombre del usuario)
+            const elementoNombreUsuario = document.getElementById('usuario-nombre') || 
+                                          document.getElementById('nombre-usuario') ||
+                                          document.getElementById('user-name') ||
+                                          document.querySelector('.user-info-name');
+            if (elementoNombreUsuario && elementoNombreUsuario.textContent.trim()) {
+                return elementoNombreUsuario.textContent.trim();
+            }
+            
+            // 2. Buscar en localStorage (común para almacenar datos de sesión del cliente)
+            if (localStorage.getItem('usuarioNombre') || localStorage.getItem('usuarioId')) {
+                return localStorage.getItem('usuarioNombre') || localStorage.getItem('usuarioId');
+            }
+            
+            // 3. Extraer de la URL si hay un ID de cliente o parámetro de usuario
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteIdParam = urlParams.get('clienteId') || urlParams.get('id') || urlParams.get('userId');
+            if (clienteIdParam) {
+                return 'Cliente ID: ' + clienteIdParam;
+            }
+            
+            // 4. Si todo falla, usar un nombre genérico
+            return 'Cliente';
+        }
+        
+        // Variable para almacenar el nombre del usuario
+        let nombreUsuario = 'Cliente';
+        
+        // Intentar obtener el nombre de la sesión
+        obtenerNombreUsuarioSesion().then(nombre => {
+            nombreUsuario = nombre;
+            console.log('Nombre de usuario establecido:', nombreUsuario);
+        });
+        
+        // Evento para enviar mensaje al hacer clic en el botón
+        sendButton.addEventListener('click', enviarMensaje);
+        
+        // Evento para enviar mensaje al presionar Enter
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                enviarMensaje();
+            }
+        });
+        
+        // Función para enviar mensaje
+        function enviarMensaje() {
+            const mensaje = messageInput.value.trim();
+            
+            if (!mensaje) return;
+            
+            // Limpiar el input
+            messageInput.value = '';
+            
+            // Añadir mensaje del usuario al chat
+            agregarMensaje(mensaje, 'user');
+            
+            // Procesar el mensaje y obtener respuesta
+            procesarMensaje(mensaje);
+        }
+        
+        // Función para evaluar el nivel de interés
+        function evaluarInteres(mensaje) {
+            const mensajeLower = mensaje.toLowerCase();
+            
+            // Verificar palabras calientes (interés alto)
+            if (palabrasCalientes.some(palabra => mensajeLower.includes(palabra))) {
+                return 'rojo';
+            } 
+            // Verificar palabras tibias (interés medio)
+            else if (palabrasTibias.some(palabra => mensajeLower.includes(palabra))) {
+                return 'amarillo';
+            } 
+            // Si no hay coincidencias, es un interés bajo
+            else {
+                return 'verde';
+            }
+        }
+        
+        // Función para enviar alerta al dashboard del administrador
+        function enviarAlertaDashboard(alerta) {
+            console.log('Enviando alerta al dashboard real:', alerta);
+            
+            // Agregar un indicador visual temporal para depuración
+            mostrarIndicadorAlerta(alerta);
+            
+            // Enviar datos al dashboard del administrador mediante una petición fetch
+            fetch('/api/admin/alertas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(alerta)
+            })
+            .then(response => {
+                console.log('Respuesta del servidor:', response.status);
+                if (!response.ok) {
+                    throw new Error(`Error al enviar la alerta: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Alerta enviada correctamente:', data);
+                // Actualizar el indicador visual
+                actualizarIndicadorAlerta('success', 'Alerta enviada correctamente');
+            })
+            .catch(error => {
+                console.error('Error al enviar la alerta:', error);
+                // Actualizar el indicador visual
+                actualizarIndicadorAlerta('error', error.message);
+                // Si hay un error al enviar la alerta, la almacenamos localmente para enviarla después
+                almacenarAlertaPendiente(alerta);
+            });
+        }
+        
+        // Función para mostrar un indicador visual de depuración (temporal)
+        function mostrarIndicadorAlerta(alerta) {
+            // Crear o actualizar el indicador
+            let indicador = document.getElementById('indicador-alerta');
+            if (!indicador) {
+                indicador = document.createElement('div');
+                indicador.id = 'indicador-alerta';
+                indicador.style.position = 'fixed';
+                indicador.style.bottom = '10px';
+                indicador.style.right = '10px';
+                indicador.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                indicador.style.color = 'white';
+                indicador.style.padding = '10px';
+                indicador.style.borderRadius = '5px';
+                indicador.style.zIndex = '9999';
+                indicador.style.fontSize = '12px';
+                document.body.appendChild(indicador);
+            }
+            
+            // Usar el nombre real del usuario logueado o el valor por defecto
+            const nombreMostrar = nombreUsuario && nombreUsuario !== 'Cliente' ? nombreUsuario : alerta.nombreUsuario;
+            console.log('Mostrando alerta con nombre:', nombreMostrar);
+            
+            indicador.innerHTML = `
+                <div>Enviando alerta: ${alerta.emojiInteres} ${nombreMostrar}</div>
+                <div>Estado: <span id="estado-alerta">Enviando...</span></div>
+            `;
+        }
+        
+        // Función para actualizar el indicador visual
+        function actualizarIndicadorAlerta(estado, mensaje) {
+            const estadoAlerta = document.getElementById('estado-alerta');
+            if (estadoAlerta) {
+                estadoAlerta.textContent = mensaje;
+                estadoAlerta.style.color = estado === 'success' ? '#4CAF50' : '#F44336';
+                
+                // Ocultar después de 5 segundos
+                setTimeout(() => {
+                    const indicador = document.getElementById('indicador-alerta');
+                    if (indicador) {
+                        indicador.style.opacity = '0';
+                        indicador.style.transition = 'opacity 0.5s';
+                        setTimeout(() => {
+                            if (indicador.parentNode) {
+                                indicador.parentNode.removeChild(indicador);
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            }
+        }
+        
+        // Función para almacenar alertas pendientes en localStorage
+        function almacenarAlertaPendiente(alerta) {
+            const alertasPendientes = JSON.parse(localStorage.getItem('alertasPendientes') || '[]');
+            alertasPendientes.push(alerta);
+            localStorage.setItem('alertasPendientes', JSON.stringify(alertasPendientes));
+        }
+        
+        // Función para procesar el mensaje y obtener una respuesta
+        async function procesarMensaje(mensaje) {
+            const mensajeLower = mensaje.toLowerCase();
+            const loadingId = mostrarCargando();
+            
+            // Evaluar nivel de interés
+            const nivelInteres = evaluarInteres(mensaje);
+            
+            // Actualizar contador de interés para este usuario
+            if (!contadorInteres[nombreUsuario]) {
+                contadorInteres[nombreUsuario] = { rojo: 0, amarillo: 0, verde: 0 };
+            }
+            contadorInteres[nombreUsuario][nivelInteres]++;
+            
+            // Crear objeto de alerta
+            const emoji = nivelInteres === 'rojo' ? '🔴' : nivelInteres === 'amarillo' ? '🟡' : '🟢';
+            const alerta = {
+                nombreUsuario: nombreUsuario,
+                hora: new Date().toLocaleTimeString(),
+                mensaje: mensaje,
+                nivelInteres: nivelInteres,
+                emojiInteres: emoji,
+                color: nivelInteres
+            };
+            
+            // Enviar alerta al dashboard
+            enviarAlertaDashboard(alerta);
+            
+            // PRIMERA FASE: Comprobar si es una pregunta específica del gimnasio que podemos responder rápidamente
+            
+            // Si es un saludo simple, dar respuesta amigable predefinida inmediatamente
+            if (mensajeLower.match(/^(hola|hey|hi|hello|qué tal|que tal|saludos|buenos días|buenas tardes|buenas noches)$/)) {
+                quitarCargando(loadingId);
+                agregarMensaje('¡Hola! Soy el asistente virtual del gimnasio. Puedo responder preguntas sobre nuestros servicios, precios, horarios, renovaciones, cancelaciones y más. ¿En qué puedo ayudarte?', 'bot', nivelInteres);
+                return;
+            }
+            
+            // Verificar coincidencias exactas con respuestas predefinidas
+            for (const [clave, respuesta] of Object.entries(respuestas)) {
+                if (mensajeLower.includes(clave)) {
+                    quitarCargando(loadingId);
+                    agregarMensaje(respuesta, 'bot', nivelInteres);
+                    return;
+                }
+            }
+            
+            // Verificar palabras clave del gimnasio para responder inmediatamente
+            for (const palabra of palabrasClave) {
+                if (mensajeLower.includes(palabra)) {
+                    // Determinar qué respuesta dar basado en la palabra clave
+                    if (palabra === 'precio' || palabra === 'costo' || palabra === 'cuanto' || palabra === 'cuánto' || 
+                        palabra === 'vale' || palabra === 'tarifa' || palabra === 'mensualidad' || 
+                        palabra === 'membresia' || palabra === 'membresía') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['precio'], 'bot');
+                        return;
+                    } else if (palabra === 'plan') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['precio'], 'bot');
+                        return;
+                    } else if (palabra === 'basico' || palabra === 'básico') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['plan basico'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'plus') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['plan plus'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'premium') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['plan premium'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'horario' || palabra === 'hora' || palabra === 'abierto' || palabra === 'cerrado') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['horario'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'clase') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['clase'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'yoga') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['yoga'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'pago' || palabra === 'pagar' || palabra === 'efectivo' || palabra === 'tarjeta') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['pago'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'inscripcion' || palabra === 'inscripción' || palabra === 'inscribir' || palabra === 'registrar') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['inscripcion'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'promocion' || palabra === 'promoción' || palabra === 'oferta' || palabra === 'descuento') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['promocion'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'entrenador') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['entrenador'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'renovacion' || palabra === 'renovación') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['renovacion'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'cancelacion' || palabra === 'cancelación') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['cancelacion'], 'bot', nivelInteres);
+                        return;
+                    } else if (palabra === 'congelacion' || palabra === 'congelación') {
+                        quitarCargando(loadingId);
+                        agregarMensaje(respuestas['congelacion'], 'bot', nivelInteres);
+                        return;
+                    }
+                }
+            }
+            
+            // SEGUNDA FASE: Solo llegar aquí para preguntas generales o no reconocidas
+            
+            // Intentar reconectar con Ollama si no está disponible
+            if (!ollamaDisponible) {
+                await verificarOllama();
+            }
+            
+            // Si Ollama está disponible, usar el modelo de IA para preguntas generales
+            if (ollamaDisponible) {
+                try {
+                    // Crear un prompt específico para el modelo optimizado para respuestas rápidas
+                    const prompt = `Eres un asistente virtual breve y preciso del gimnasio. Responde en 2-3 frases a: "${mensaje}"
+
+Información del gimnasio:
+
+1. PLANES: Básico (100 soles/mes, acceso a sala), Plus (150 soles/mes, acceso a clases), Premium (200 soles/mes, incluye entrenador)
+
+2. HORARIOS: Lunes-viernes 6AM-10PM, Sábados 8AM-8PM, Domingos 9AM-2PM
+
+3. CLASES: Spinning, Yoga, Pilates, Zumba, Funcional, HIIT, Body Pump, Stretching, Boxeo (horarios específicos disponibles)
+
+4. RENOVACIÓN: Desde 5 días antes del vencimiento. Opciones: recepción, online, automática. Renovación anticipada: 5% descuento
+
+5. CANCELACIÓN: Notificar 7 días antes, llenar formulario, estar al día en pagos. Sin penalidades si es a tiempo
+
+6. CONGELACIÓN: Hasta 30 días/año, solicitar 3 días antes, no aplica a promociones
+
+Sé amigable pero directo y conciso:`;
+                    
+                    // Consultar a Ollama
+                    const respuesta = await ollamaClient.generateResponse(prompt);
+                    quitarCargando(loadingId);
+                    agregarMensaje(respuesta, 'bot', nivelInteres);
+                    return;
+                    
+                } catch (error) {
+                    console.error('Error al procesar mensaje con Ollama:', error);
+                    // Si hay error, continuamos con la respuesta por defecto
+                }
+            }
+            
+            // Si llegamos aquí, significa que no reconocimos la pregunta y Ollama no está disponible
+            quitarCargando(loadingId);
+            agregarMensaje(respuestas['default'], 'bot', nivelInteres);
+        }
+        
+        // Función para mostrar indicador de carga
+        function mostrarCargando() {
+            const id = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = id;
+            loadingDiv.className = 'message bot loading';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                loadingDiv.appendChild(dot);
+            }
+            
+            chatMessages.appendChild(loadingDiv);
+            
+            // Hacer scroll hasta el final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return id;
+        }
+        
+        // Función para quitar indicador de carga
+        function quitarCargando(id) {
+            const loadingDiv = document.getElementById(id);
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+        
+        // Función para agregar un mensaje al chat
+        function agregarMensaje(texto, tipo, nivelInteres = null) {
+            const mensaje = document.createElement('div');
+            mensaje.className = `message ${tipo}`;
+            mensaje.textContent = texto;
+            
+            // Si hay indicador de interés y es un mensaje del bot, mostrar el semáforo
+            if (nivelInteres && tipo === 'bot') {
+                const indicador = document.createElement('div');
+                indicador.className = `interest-indicator interest-${nivelInteres}`;
+                
+                if (nivelInteres === 'rojo') {
+                    indicador.title = 'Alto interés - Pregunta por precios, pagos o inscripción';
+                    indicador.textContent = '🔴';
+                } else if (nivelInteres === 'amarillo') {
+                    indicador.title = 'Interés medio - Pregunta por planes o clases';
+                    indicador.textContent = '🟡';
+                } else {
+                    indicador.title = 'Interés general';
+                    indicador.textContent = '🟢';
+                }
+                
+                mensaje.appendChild(indicador);
+            }
+            
+            chatMessages.appendChild(mensaje);
+            
+            // Hacer scroll hasta el final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

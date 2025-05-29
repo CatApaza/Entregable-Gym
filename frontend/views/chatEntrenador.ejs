@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con Cliente | GymApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message-sent {
+            align-self: flex-end;
+            background-color: #dcf8c6;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-received {
+            align-self: flex-start;
+            background-color: #f1f0f0;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-info {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+
+        .chat-input button {
+            border-radius: 20px;
+            padding: 0 20px;
+        }
+
+        .btn-back {
+            margin-bottom: 20px;
+        }
+
+        .typing-indicator {
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-12">
+                <a href="/chat/entrenador/<%= entrenador._id %>" class="btn btn-secondary btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver a la lista de clientes
+                </a>
+                
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <span>
+                            <i class="fas fa-comments me-2"></i>
+                            Chat con Cliente: <%= cliente.usuarioId.nombre %> <%= cliente.usuarioId.apellido %>
+                        </span>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <% if (mensajes.length === 0) { %>
+                            <div class="message message-sent">
+                                <div class="message-content">u00a1Hola <%= cliente.usuarioId.nombre %>! Soy tu entrenador. u00bfEn quu00e9 puedo ayudarte hoy?</div>
+                                <div class="message-info">
+                                    <span>Sistema</span>
+                                    <span><%= new Date().toLocaleTimeString() %></span>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <% mensajes.forEach(function(mensaje) { %>
+                                <div class="message <%= mensaje.senderId.toString() === userId.toString() ? 'message-sent' : 'message-received' %>">
+                                    <div class="message-content"><%= mensaje.message %></div>
+                                    <div class="message-info">
+                                        <span><%= mensaje.username %></span>
+                                        <span><%= new Date(mensaje.timestamp).toLocaleTimeString() %></span>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                    
+                    <div class="typing-indicator" id="typingIndicator"></div>
+                    
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Escribe tu mensaje...">
+                        <button class="btn btn-primary" id="sendButton">
+                            <i class="fas fa-paper-plane"></i> Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Datos del usuario
+            const userId = '<%= userId %>';
+            const userType = '<%= userType %>';
+            const username = '<%= entrenador.usuarioId.nombre %> <%= entrenador.usuarioId.apellido %>';
+            const receiverId = '<%= cliente.usuarioId._id %>';
+            const receiverType = 'cliente';
+            
+            // Conectar a Socket.IO
+            const socket = io();
+            
+            // Elementos del DOM
+            const chatMessages = document.getElementById('chatMessages');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const typingIndicator = document.getElementById('typingIndicator');
+            
+            // Funciu00f3n para agregar un mensaje al chat
+            function addMessage(message, isSent) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isSent ? 'message-sent' : 'message-received'}`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.textContent = message.message;
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'message-info';
+                
+                const usernameSpan = document.createElement('span');
+                usernameSpan.textContent = message.username;
+                
+                const timeSpan = document.createElement('span');
+                timeSpan.textContent = new Date(message.timestamp || Date.now()).toLocaleTimeString();
+                
+                infoDiv.appendChild(usernameSpan);
+                infoDiv.appendChild(timeSpan);
+                
+                messageDiv.appendChild(contentDiv);
+                messageDiv.appendChild(infoDiv);
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Evento para enviar mensaje
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (!messageText) return;
+                
+                const message = {
+                    senderId: userId,
+                    senderType: userType,
+                    receiverId: receiverId,
+                    receiverType: receiverType,
+                    username: username,
+                    message: messageText,
+                    timestamp: new Date()
+                };
+                
+                // Emitir mensaje al servidor
+                socket.emit('private-message', message);
+                
+                // Agregar mensaje al chat
+                addMessage(message, true);
+                
+                // Limpiar input
+                messageInput.value = '';
+                messageInput.focus();
+            }
+            
+            // Evento click del botu00f3n enviar
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Evento al presionar Enter en el input
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Evento al escribir en el input (indicador de escritura)
+            messageInput.addEventListener('input', function() {
+                socket.emit('writing', username);
+            });
+            
+            // Escuchar mensajes privados
+            socket.on(`chat-${userId}-${receiverId}`, function(message) {
+                if (message.senderId !== userId) {
+                    addMessage(message, false);
+                }
+            });
+            
+            // Escuchar indicador de escritura
+            socket.on('writing', function(username) {
+                typingIndicator.textContent = `${username} estu00e1 escribiendo...`;
+                typingIndicator.style.display = 'block';
+                
+                // Ocultar despuu00e9s de 3 segundos
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                }, 3000);
+            });
+            
+            // Solicitar conversaciu00f3n al conectar
+            socket.on('connect', function() {
+                socket.emit('get-conversation', {
+                    user1Id: userId,
+                    user2Id: receiverId
+                });
+            });
+            
+            // Hacer scroll al final del chat al cargar
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Inicializar el sistema de notificaciones
+            // Importante: Usamos el ID del usuario, no el ID del entrenador
+            window.userId = '<%= userId %>';
+            console.log('ID de usuario para notificaciones:', window.userId);
+            
+            // Marcar mensajes como leu00eddos al abrir el chat
+            socket.emit('mark-notifications-read', {
+                userId: window.userId,
+                notificationIds: [], // Vau00edo marca todas como leu00eddas
+                senderId: receiverId // Marcar solo los mensajes de este remitente
+            });
+            
+            // Forzar actualización del contador de notificaciones
+            socket.emit('get-notifications', { userId: window.userId });
+            
+            // Actualizar el contador de mensajes no leu00eddos para este chat especu00edfico
+            socket.emit('reset-unread-count', {
+                senderId: receiverId,
+                receiverId: userId
+            });
+        });
+    </script>
+    
+    <!-- Sistema de Notificaciones -->
+    <script src="/js/notifications.js"></script>
+</body>
+</html>

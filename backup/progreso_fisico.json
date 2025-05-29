@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "6805672b9cfab96166b5f8a0",
+    "clienteId": "680560d39cfab96166b5f89b",
+    "fechaRegistro": "2025-04-20T21:29:15.304Z",
+    "pesoKg": 70,
+    "alturaCm": 170,
+    "imc": 24.2,
+    "grasaCorporal": 18,
+    "musculo": 38,
+    "observaciones": "Mejora en composición corporal"
+  }
+]

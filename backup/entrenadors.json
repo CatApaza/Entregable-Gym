@@ -1,0 +1,70 @@
+[
+  {
+    "_id": "682f6e553ba550ec78dd9823",
+    "usuarioId": "682f6e553ba550ec78dd9821",
+    "especialidad": "Yoga",
+    "certificaciones": [
+      "ww"
+    ],
+    "experienciaAnios": 2,
+    "descripcionPerfil": "22www",
+    "verificado": false,
+    "codigoVerificacion": "3ED8E235",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-22T18:35:01.355Z",
+    "updatedAt": "2025-05-22T18:35:01.355Z",
+    "__v": 0
+  },
+  {
+    "_id": "68308f0ce307fe883934eb84",
+    "usuarioId": "68308f0ce307fe883934eb82",
+    "especialidad": "Hipertrofia",
+    "certificaciones": [
+      "NSCA"
+    ],
+    "experienciaAnios": 2,
+    "descripcionPerfil": "Hola soy tu entrenador junior",
+    "verificado": false,
+    "codigoVerificacion": "49420EC7",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-23T15:06:52.254Z",
+    "updatedAt": "2025-05-23T15:06:52.254Z",
+    "__v": 0
+  },
+  {
+    "_id": "6833e353b33c7063ef182773",
+    "usuarioId": "6833e353b33c7063ef182771",
+    "especialidad": "Crosfit",
+    "certificaciones": [
+      "qqqq"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "JJJJJJJ",
+    "verificado": false,
+    "codigoVerificacion": "D2C1DA65",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-26T03:43:15.208Z",
+    "updatedAt": "2025-05-26T03:43:15.208Z",
+    "__v": 0
+  },
+  {
+    "_id": "68355999eb5dbe2994abfd95",
+    "usuarioId": "68355999eb5dbe2994abfd93",
+    "especialidad": "yoga",
+    "certificaciones": [
+      "we"
+    ],
+    "experienciaAnios": 2,
+    "descripcionPerfil": "hola soy julio",
+    "verificado": false,
+    "codigoVerificacion": "0548E3D7",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-27T06:20:09.050Z",
+    "updatedAt": "2025-05-27T06:20:09.050Z",
+    "__v": 0
+  }
+]

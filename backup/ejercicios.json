@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "680f8f7abe9d2306da7de671",
+    "nombre": "Flexiones",
+    "descripcion": "Ejercicio para trabajar el pecho, los hombros y los tríceps. Se realiza en posición de plancha, bajando y subiendo el cuerpo con los brazos.",
+    "musculoPrincipal": "Espalda baja, Glúteos",
+    "equipoNecesario": "Barra con pesas",
+    "__v": 0
+  },
+  {
+    "_id": "680f8f84be9d2306da7de673",
+    "nombre": "Flexiones",
+    "descripcion": "Ejercicio para trabajar el pecho, los hombros y los tríceps. Se realiza en posición de plancha, bajando y subiendo el cuerpo con los brazos.",
+    "musculoPrincipal": "Espalda baja, Glúteos",
+    "equipoNecesario": "Barra con pesas",
+    "__v": 0
+  },
+  {
+    "_id": "680f8fbbbe9d2306da7de676",
+    "nombre": "Peso Muerto",
+    "descripcion": "Ejercicio para trabajar la parte posterior del cuerpo,",
+    "musculoPrincipal": "Espalda baja, Glúteos",
+    "equipoNecesario": "Barra con pesas",
+    "__v": 0
+  },
+  {
+    "_id": "680f8fbebe9d2306da7de678",
+    "nombre": "Peso Muerto",
+    "descripcion": "Ejercicio para trabajar la parte posterior del cuerpo,",
+    "musculoPrincipal": "Espalda baja, Glúteos",
+    "equipoNecesario": "Barra con pesas",
+    "__v": 0
+  },
+  {
+    "_id": "680fa73a295314eeaf25b82f",
+    "nombre": "Flexiones",
+    "descripcion": "Ejercicio para trabajar el pecho, los hombros y los tríceps. Se realiza en posición de plancha, bajando y subiendo el cuerpo con los brazos.",
+    "musculoPrincipal": "Espalda baja, Glúteos",
+    "equipoNecesario": "Barra con pesas",
+    "__v": 0
+  },
+  {
+    "_id": "681087e6be282c71ff20d86c",
+    "nombre": "tttt",
+    "descripcion": "tttt",
+    "musculoPrincipal": "ttt",
+    "equipoNecesario": "ttt",
+    "__v": 0
+  }
+]

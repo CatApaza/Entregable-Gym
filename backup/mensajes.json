@@ -1,0 +1,10 @@
+[
+  {
+    "_id": "680569a09cfab96166b5f8a2",
+    "remitenteId": "680562a49cfab96166b5f89d",
+    "destinatarioId": "680560d39cfab96166b5f89b",
+    "mensaje": "Hola, ¿cómo va la rutina?",
+    "fechaEnvio": "2025-04-20T21:39:44.449Z",
+    "leido": false
+  }
+]

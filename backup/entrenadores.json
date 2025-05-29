@@ -1,0 +1,207 @@
+[
+  {
+    "_id": "680562a49cfab96166b5f89d",
+    "usuarioId": "680561b09cfab96166b5f89c",
+    "especialidad": "Hipertrofia",
+    "certificaciones": [
+      "NASM",
+      "ACE"
+    ],
+    "experienciaAnios": 5,
+    "descripcionPerfil": "Entrenador certificado en programas de fuerza"
+  },
+  {
+    "_id": "680d1432f888f06f512ae4f6",
+    "usuarioId": "680d1432f888f06f512ae4f4",
+    "certificaciones": [],
+    "__v": 0
+  },
+  {
+    "_id": "680d16c8615bc5ca205d434a",
+    "usuarioId": "680d16c8615bc5ca205d4348",
+    "certificaciones": [],
+    "__v": 0
+  },
+  {
+    "_id": "680edc55b6420a4eeb9b1dbf",
+    "usuarioId": "680edc55b6420a4eeb9b1dbd",
+    "especialidad": "gg",
+    "certificaciones": [
+      "gg"
+    ],
+    "experienciaAnios": 4,
+    "descripcionPerfil": "ggggg",
+    "__v": 0
+  },
+  {
+    "_id": "680ee315bd5e931ac501eb91",
+    "usuarioId": "680ee314bd5e931ac501eb8f",
+    "especialidad": "y",
+    "certificaciones": [
+      "y"
+    ],
+    "experienciaAnios": 5,
+    "descripcionPerfil": "y",
+    "__v": 0
+  },
+  {
+    "_id": "680ee789c3c388349d90ed8c",
+    "usuarioId": "680ee789c3c388349d90ed8a",
+    "especialidad": "",
+    "certificaciones": [
+      ""
+    ],
+    "experienciaAnios": null,
+    "descripcionPerfil": "",
+    "__v": 0
+  },
+  {
+    "_id": "680efa0cad8cd227191979df",
+    "usuarioId": "680efa0cad8cd227191979dd",
+    "especialidad": "hhh",
+    "certificaciones": [
+      "hh"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "hhhh",
+    "__v": 0
+  },
+  {
+    "_id": "680f7962403dc68ddaec5e7c",
+    "usuarioId": "680f7962403dc68ddaec5e7a",
+    "especialidad": "hola",
+    "certificaciones": [
+      "holis"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "holis",
+    "__v": 0
+  },
+  {
+    "_id": "680fb3cd295314eeaf25b83e",
+    "usuarioId": "680fb3cd295314eeaf25b83c",
+    "especialidad": "Yoga",
+    "certificaciones": [
+      "12"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "Experiencia",
+    "__v": 0
+  },
+  {
+    "_id": "68105fd0661297e48ae0704d",
+    "usuarioId": "68105fd0661297e48ae0704b",
+    "especialidad": "Yoga",
+    "certificaciones": [
+      "1",
+      "1"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "nose",
+    "verificado": false,
+    "codigoVerificacion": "44195E30",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-04-29T05:12:48.251Z",
+    "updatedAt": "2025-04-29T05:12:48.251Z",
+    "__v": 0
+  },
+  {
+    "_id": "68107356cda2fa1b35a409a8",
+    "usuarioId": "68107356cda2fa1b35a409a6",
+    "especialidad": "tt",
+    "certificaciones": [
+      "tt"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "11",
+    "verificado": false,
+    "codigoVerificacion": "9C29ADF9",
+    "fechaVerificacion": null,
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-04-29T06:36:06.903Z",
+    "updatedAt": "2025-04-29T06:36:06.903Z",
+    "__v": 0
+  },
+  {
+    "_id": "681081d6aa3a828607ee593d",
+    "usuarioId": "681081d6aa3a828607ee593a",
+    "especialidad": "b",
+    "certificaciones": [
+      "b"
+    ],
+    "experienciaAnios": 1,
+    "descripcionPerfil": "vvv",
+    "verificado": false,
+    "codigoVerificacion": "8013E8EB",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-04-29T07:37:58.324Z",
+    "updatedAt": "2025-04-29T07:37:58.324Z",
+    "__v": 0
+  },
+  {
+    "_id": "6810fb3a604fb8f04818cfc5",
+    "usuarioId": "6810fb3a604fb8f04818cfc3",
+    "especialidad": "Yoga",
+    "certificaciones": [
+      "asm"
+    ],
+    "experienciaAnios": 5,
+    "descripcionPerfil": "nuevo entrenador",
+    "verificado": false,
+    "codigoVerificacion": "15076A64",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-04-29T16:15:54.390Z",
+    "updatedAt": "2025-04-29T16:15:54.390Z",
+    "__v": 0
+  },
+  {
+    "_id": "681d73b547bd12b3931ff962",
+    "usuarioId": "681d73b547bd12b3931ff960",
+    "especialidad": "Correr",
+    "certificaciones": [
+      "NSCA"
+    ],
+    "experienciaAnios": 3,
+    "descripcionPerfil": "soy yo ",
+    "verificado": false,
+    "codigoVerificacion": "F50E8191",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-09T03:17:09.759Z",
+    "updatedAt": "2025-05-09T03:17:09.759Z",
+    "__v": 0
+  },
+  {
+    "_id": "682f3d89bf9160d31824fcfa",
+    "usuarioId": "682f3d89bf9160d31824fcf8",
+    "especialidad": "Curso",
+    "certificaciones": [
+      "1"
+    ],
+    "experienciaAnios": 5,
+    "descripcionPerfil": "Hola soy Jose ",
+    "verificado": false,
+    "codigoVerificacion": "F316928F",
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-22T15:06:49.457Z",
+    "updatedAt": "2025-05-22T15:06:49.457Z",
+    "__v": 0
+  },
+  {
+    "_id": "682f6a26786acd77443f80e0",
+    "usuarioId": "682f6a26786acd77443f80dd",
+    "especialidad": "Fitness general",
+    "certificaciones": [],
+    "verificado": false,
+    "estado": "pendiente",
+    "documentosVerificacion": [],
+    "createdAt": "2025-05-22T18:17:10.318Z",
+    "updatedAt": "2025-05-22T18:17:10.318Z",
+    "__v": 0
+  }
+]

@@ -1,0 +1,732 @@
+[
+  {
+    "_id": "680565d19cfab96166b5f89f",
+    "clienteId": "680560d39cfab96166b5f89b",
+    "entrenadorId": "680562a49cfab96166b5f89d",
+    "nombre": "Rutina de fuerza",
+    "descripcion": "Fase 1 - Hipertrofia",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-01T00:00:00.000Z",
+    "fechaFin": "2025-04-29T00:00:00.000Z",
+    "estado": "activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [
+          {
+            "nombre": "Sentadillas",
+            "series": 4,
+            "repeticiones": 10,
+            "descansoSegundos": 60
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "6810498c5cc508ff39c77b26",
+    "nombre": "nose",
+    "descripcion": "nose",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-04T00:00:00.000Z",
+    "fechaFin": "2025-05-02T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "6810498c5cc508ff39c77b27"
+      },
+      {
+        "diaSemana": "Miércoles",
+        "ejercicios": [],
+        "_id": "6810498c5cc508ff39c77b28"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "6810498c5cc508ff39c77b29"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "681049a95cc508ff39c77b31",
+    "entrenadorId": "680fb3cd295314eeaf25b83e",
+    "nombre": "ni ideaaaaaaaaaaaaaaa",
+    "descripcion": "ni idea x2",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-12T00:00:00.000Z",
+    "fechaFin": "2025-05-10T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "681049a95cc508ff39c77b32"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "681049e65cc508ff39c77b35",
+    "entrenadorId": "680fb3cd295314eeaf25b83e",
+    "nombre": "ni idea",
+    "descripcion": "ni idea",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-12T00:00:00.000Z",
+    "fechaFin": "2025-05-10T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "681049e65cc508ff39c77b36"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68104b090cba88f1dabf782b",
+    "entrenadorId": "680fb3cd295314eeaf25b83e",
+    "nombre": "nosesss",
+    "descripcion": "nose",
+    "duracionSemanas": 34,
+    "fechaInicio": "2025-04-01T00:00:00.000Z",
+    "fechaFin": "2025-04-15T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "68104b090cba88f1dabf782c"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68104ca79aba9355bb101253",
+    "entrenadorId": "680fb3cd295314eeaf25b83e",
+    "nombre": "hh",
+    "descripcion": "hh",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-11T00:00:00.000Z",
+    "fechaFin": "2025-05-09T00:00:00.000Z",
+    "estado": "Borrador",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "68104ca79aba9355bb101254"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68106177661297e48ae0708a",
+    "entrenadorId": "68105fd0661297e48ae0704d",
+    "nombre": "Rutina Pier",
+    "descripcion": "Pesado",
+    "duracionSemanas": 1,
+    "fechaInicio": "2025-04-30T00:00:00.000Z",
+    "fechaFin": "2025-05-07T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Jueves",
+        "ejercicios": [],
+        "_id": "68106177661297e48ae0708b"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "68106177661297e48ae0708c"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68107a128377049ef9f5d026",
+    "entrenadorId": "68105fd0661297e48ae0704d",
+    "nombre": "jj",
+    "descripcion": "jj",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-26T00:00:00.000Z",
+    "fechaFin": "2025-05-24T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "68107a128377049ef9f5d027"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68108126aa3a828607ee5910",
+    "entrenadorId": "680fb3cd295314eeaf25b83e",
+    "nombre": "bbkk",
+    "descripcion": "bb",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-20T00:00:00.000Z",
+    "fechaFin": "2025-05-18T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "68108126aa3a828607ee5911"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "68108126aa3a828607ee5912"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68109200be282c71ff20d93e",
+    "entrenadorId": "68105fd0661297e48ae0704d",
+    "nombre": "ee",
+    "descripcion": "ee",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-04-12T00:00:00.000Z",
+    "fechaFin": "2025-05-10T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "68109200be282c71ff20d93f"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682ea41039ee9d253450a7c8",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "Correr",
+    "descripcion": "dd",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-10T00:00:00.000Z",
+    "fechaFin": "2025-06-07T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682ea41039ee9d253450a7c9"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682ea65ad0b486f63d4c32ce",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "f",
+    "descripcion": "f",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-30T00:00:00.000Z",
+    "fechaFin": "2025-06-27T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682ea65ad0b486f63d4c32cf"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "682ea65ad0b486f63d4c32d0"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682ea7adf79cc080250393e3",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "vv",
+    "descripcion": "vv",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-06-01T00:00:00.000Z",
+    "fechaFin": "2025-06-29T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682ea7adf79cc080250393e4"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682eaa882dafe574f6941363",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "tt",
+    "descripcion": "tt",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-14T00:00:00.000Z",
+    "fechaFin": "2025-06-11T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682eaa882dafe574f6941364"
+      },
+      {
+        "diaSemana": "Jueves",
+        "ejercicios": [],
+        "_id": "682eaa882dafe574f6941365"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f264bb7c160deba45abb3",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "Luana",
+    "descripcion": "tt",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-17T00:00:00.000Z",
+    "fechaFin": "2025-06-14T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682f264bb7c160deba45abb4"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "682f264bb7c160deba45abb5"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f2a77ac8bea92cfef75d0",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "r",
+    "descripcion": "r",
+    "duracionSemanas": 4,
+    "fechaInicio": "2006-05-21T00:00:00.000Z",
+    "fechaFin": "2006-06-18T00:00:00.000Z",
+    "estado": "Borrador",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682f2a77ac8bea92cfef75d1"
+      },
+      {
+        "diaSemana": "Jueves",
+        "ejercicios": [],
+        "_id": "682f2a77ac8bea92cfef75d2"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f2a8aac8bea92cfef75da",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "Verduraas",
+    "descripcion": "v",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-18T00:00:00.000Z",
+    "fechaFin": "2025-06-15T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "682f2a8aac8bea92cfef75db"
+      },
+      {
+        "diaSemana": "Domingo",
+        "ejercicios": [],
+        "_id": "682f2a8aac8bea92cfef75dc"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f3ebbbf9160d31824fdd1",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "h",
+    "descripcion": "h",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-07T00:00:00.000Z",
+    "fechaFin": "2025-06-04T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "_id": "682f5918cbf07e8392a2ce8b",
+        "ejercicios": []
+      }
+    ],
+    "__v": 2,
+    "clienteId": "682f3dcabf9160d31824fd2f",
+    "diasSemana": []
+  },
+  {
+    "_id": "682f4bc1c44455b5990c79b7",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "vvw",
+    "descripcion": "vv",
+    "duracionSemanas": 4,
+    "fechaInicio": "2006-05-12T00:00:00.000Z",
+    "fechaFin": "2006-06-09T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "682f4bc1c44455b5990c79b8"
+      }
+    ],
+    "__v": 0,
+    "clienteId": "682f3dcabf9160d31824fd2f"
+  },
+  {
+    "_id": "682f51380b4eca43d60ed8f4",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "c",
+    "descripcion": "c",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-25T00:00:00.000Z",
+    "fechaFin": "2025-06-22T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": {
+      "0": [
+        {
+          "diaSemana": "Martes",
+          "ejercicios": [],
+          "_id": "682f51380b4eca43d60ed8f5"
+        }
+      ]
+    },
+    "__v": 1,
+    "clienteId": "682f3dcabf9160d31824fd2f",
+    "diasSemana": []
+  },
+  {
+    "_id": "682f5904cbf07e8392a2ce68",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "w",
+    "descripcion": "w",
+    "duracionSemanas": 4,
+    "fechaInicio": "1892-02-01T00:00:00.000Z",
+    "fechaFin": "1892-02-29T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682f5904cbf07e8392a2ce69"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f594ccbf07e8392a2cef6",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "ee",
+    "descripcion": "ee",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-11T00:00:00.000Z",
+    "fechaFin": "2025-06-08T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682f594ccbf07e8392a2cef7"
+      }
+    ],
+    "__v": 0,
+    "clienteId": "682f3dcabf9160d31824fd2f"
+  },
+  {
+    "_id": "682f59a6cbf07e8392a2cf52",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "Corre",
+    "descripcion": "cc",
+    "duracionSemanas": 4,
+    "fechaInicio": "+051002-02-10T05:00:00.000Z",
+    "fechaFin": "+051002-03-10T05:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682f59a6cbf07e8392a2cf53"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f5ac6074fae7eff073a9e",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "22",
+    "descripcion": "22",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-31T00:00:00.000Z",
+    "fechaFin": "2025-06-28T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682f5ac6074fae7eff073a9f"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f5ada074fae7eff073aa7",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "2",
+    "descripcion": "2",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-03T00:00:00.000Z",
+    "fechaFin": "2025-05-31T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682f5ada074fae7eff073aa8"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f5c6b99048dbe88a3cdeb",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "b",
+    "descripcion": "b",
+    "duracionSemanas": 4,
+    "fechaInicio": "2006-05-12T00:00:00.000Z",
+    "fechaFin": "2006-06-09T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Miércoles",
+        "ejercicios": [],
+        "_id": "682f5c6b99048dbe88a3cdec"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f5cc599048dbe88a3cdff",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "cc",
+    "descripcion": "c",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-03T00:00:00.000Z",
+    "fechaFin": "2025-05-31T00:00:00.000Z",
+    "estado": "Activa",
+    "diasSemana": [],
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "682f5cc599048dbe88a3ce00"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f6e6f3ba550ec78dd983c",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Exelentex222",
+    "descripcion": "ee33",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-07T00:00:00.000Z",
+    "fechaFin": "2025-06-04T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "682f6e6f3ba550ec78dd983d"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "682f808085709dfbcf998924",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "rr2234",
+    "descripcion": "rr",
+    "duracionSemanas": 4,
+    "fechaInicio": "2006-05-12T00:00:00.000Z",
+    "fechaFin": "2006-06-09T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "682f808085709dfbcf998925"
+      },
+      {
+        "diaSemana": "Domingo",
+        "ejercicios": [],
+        "_id": "682f808085709dfbcf998926"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "683562016395c19d1cf46232",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "nnnnnn",
+    "descripcion": "nn",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-09T00:00:00.000Z",
+    "fechaFin": "2025-06-06T00:00:00.000Z",
+    "estado": "Inactiva",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "683562016395c19d1cf46233"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "683562016395c19d1cf46234"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6835773ca12037618bf423dd",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Rutina Full Body Intermedia",
+    "descripcion": "Entrenamiento de cuerpo completo diseñado para mejorar la fuerza general y la resistencia. Incluye ejercicios con peso corporal, pesas y cardio ligero.",
+    "duracionSemanas": 6,
+    "fechaInicio": "2025-05-27T00:00:00.000Z",
+    "fechaFin": "2025-07-08T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "6835773ca12037618bf423de"
+      },
+      {
+        "diaSemana": "Miércoles",
+        "ejercicios": [],
+        "_id": "6835773ca12037618bf423df"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "6835773ca12037618bf423e0"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6835b95e8a77622d01595244",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Tania",
+    "descripcion": "apaza",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-22T00:00:00.000Z",
+    "fechaFin": "2025-06-19T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "6835b95e8a77622d01595245"
+      },
+      {
+        "diaSemana": "Viernes",
+        "ejercicios": [],
+        "_id": "6835b95e8a77622d01595246"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "6835d3c990227f878869b24e",
+    "clienteId": "6832ba2a1e8f7bf58ff515af",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Correr",
+    "descripcion": "correr",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-24T00:00:00.000Z",
+    "fechaFin": "2025-06-21T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "6835d3c990227f878869b24f"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68386a88faf02acb174e998b",
+    "clienteId": "6835d064ee5d648dc01362ad",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "oooo",
+    "descripcion": "",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-18T00:00:00.000Z",
+    "fechaFin": "2025-06-15T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Lunes",
+        "ejercicios": [],
+        "_id": "68386a88faf02acb174e998c"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "68386c4db356bfc453860c4f",
+    "clienteId": "68386bf1b356bfc453860b94",
+    "entrenadorId": "68308f0ce307fe883934eb84",
+    "nombre": "ff",
+    "descripcion": "ff",
+    "duracionSemanas": 4,
+    "fechaInicio": "2025-05-01T00:00:00.000Z",
+    "fechaFin": "2025-05-29T00:00:00.000Z",
+    "estado": "Activa",
+    "ejercicios": [
+      {
+        "diaSemana": "Martes",
+        "ejercicios": [],
+        "_id": "68386c4db356bfc453860c50"
+      },
+      {
+        "diaSemana": "Domingo",
+        "ejercicios": [],
+        "_id": "68386c4db356bfc453860c51"
+      }
+    ],
+    "__v": 0
+  }
+]

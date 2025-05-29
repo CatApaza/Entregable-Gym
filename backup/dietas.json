@@ -1,0 +1,234 @@
+[
+  {
+    "_id": "680568fe9cfab96166b5f8a1",
+    "clienteId": "680560d39cfab96166b5f89b",
+    "entrenadorId": "680562a49cfab96166b5f89d",
+    "nombre": "Dieta balanceada",
+    "descripcion": "Plan semanal con comidas equilibradas",
+    "fechaInicio": "2025-04-01T00:00:00.000Z",
+    "fechaFin": "2025-04-29T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "Avena con fruta y huevo",
+        "caloriasEstimadas": 450
+      },
+      {
+        "tipoComida": "Almuerzo",
+        "descripcion": "Pollo a la plancha con arroz integral y ensalada",
+        "caloriasEstimadas": 600
+      }
+    ]
+  },
+  {
+    "_id": "682e9a8a572b3604636d9dc1",
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "nombre": "Verduraas",
+    "descripcion": "muchas",
+    "fechaInicio": "2025-05-23T00:00:00.000Z",
+    "fechaFin": "2025-05-23T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "exelente",
+        "caloriasEstimadas": 12234,
+        "_id": "682e9a8a572b3604636d9dc2"
+      }
+    ],
+    "createdAt": "2025-05-22T03:31:22.275Z",
+    "updatedAt": "2025-05-22T03:31:22.287Z",
+    "__v": 0,
+    "clienteId": "681d8a40b0ce554d0a4c1aad"
+  },
+  {
+    "_id": "682f4b8bc44455b5990c7997",
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "nombre": "Papas",
+    "descripcion": "sss",
+    "fechaInicio": "2025-05-01T00:00:00.000Z",
+    "fechaFin": "2025-06-05T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "ss",
+        "caloriasEstimadas": 12345,
+        "_id": "682f4b8bc44455b5990c7998"
+      }
+    ],
+    "createdAt": "2025-05-22T16:06:35.924Z",
+    "updatedAt": "2025-05-22T16:06:35.936Z",
+    "__v": 0
+  },
+  {
+    "_id": "682faa395a7eb57b8cbd04d4",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Correr",
+    "descripcion": "tania",
+    "fechaInicio": "2025-05-16T00:00:00.000Z",
+    "fechaFin": "2025-05-16T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Merienda",
+        "descripcion": "qqq",
+        "caloriasEstimadas": 12,
+        "_id": "682faa395a7eb57b8cbd04d5"
+      }
+    ],
+    "createdAt": "2025-05-22T22:50:33.025Z",
+    "updatedAt": "2025-05-22T22:50:33.041Z",
+    "__v": 0
+  },
+  {
+    "_id": "682fb600b12ee1b87531febc",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Zanahoria",
+    "descripcion": "Hola",
+    "fechaInicio": "2025-05-31T00:00:00.000Z",
+    "fechaFin": "2025-05-27T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Almuerzo",
+        "descripcion": "comida rica ",
+        "caloriasEstimadas": 500,
+        "_id": "682fb600b12ee1b87531febd"
+      },
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "comida tambien rica ",
+        "caloriasEstimadas": 200,
+        "_id": "682fb600b12ee1b87531febe"
+      }
+    ],
+    "createdAt": "2025-05-22T23:40:48.901Z",
+    "updatedAt": "2025-05-22T23:40:48.914Z",
+    "__v": 0
+  },
+  {
+    "_id": "683082152738e538ab00b6eb",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Pansito",
+    "descripcion": "poco",
+    "fechaInicio": "2025-05-24T00:00:00.000Z",
+    "fechaFin": "2025-05-28T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Almuerzo",
+        "descripcion": "hola pancito",
+        "caloriasEstimadas": 250,
+        "_id": "683082152738e538ab00b6ec"
+      },
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "cafecito",
+        "caloriasEstimadas": 100,
+        "_id": "683082152738e538ab00b6ed"
+      }
+    ],
+    "createdAt": "2025-05-23T14:11:33.795Z",
+    "updatedAt": "2025-05-23T14:11:33.797Z",
+    "__v": 0
+  },
+  {
+    "_id": "68356c09a12037618bf41dc7",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "mm",
+    "descripcion": "mm",
+    "fechaInicio": "2025-05-16T00:00:00.000Z",
+    "fechaFin": "2025-06-11T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "mm",
+        "caloriasEstimadas": 99,
+        "_id": "68356c09a12037618bf41dc8"
+      }
+    ],
+    "createdAt": "2025-05-27T07:38:49.816Z",
+    "updatedAt": "2025-05-27T07:38:49.821Z",
+    "__v": 0
+  },
+  {
+    "_id": "68357783a12037618bf423f8",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Dieta Definición Muscular",
+    "descripcion": "Plan nutricional bajo en carbohidratos y alto en proteínas, diseñado para promover la pérdida de grasa y preservar masa muscular.",
+    "fechaInicio": "2025-05-27T00:00:00.000Z",
+    "fechaFin": "2025-06-24T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "– 4 claras de huevo\n– 1 huevo entero\n– 1 taza de avena cocida en agua\n– 1 banana pequeña\n– 1 taza de té verde sin azúcar",
+        "caloriasEstimadas": 450,
+        "_id": "68357783a12037618bf423f9"
+      }
+    ],
+    "createdAt": "2025-05-27T08:27:47.619Z",
+    "updatedAt": "2025-05-27T08:27:47.626Z",
+    "__v": 0
+  },
+  {
+    "_id": "6835b9758a77622d01595251",
+    "clienteId": "682f7d32e41300914115a8a9",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "Tania",
+    "descripcion": "apza",
+    "fechaInicio": "2025-05-08T00:00:00.000Z",
+    "fechaFin": "2025-06-06T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "aaa",
+        "caloriasEstimadas": 123456,
+        "_id": "6835b9758a77622d01595252"
+      }
+    ],
+    "createdAt": "2025-05-27T13:09:09.859Z",
+    "updatedAt": "2025-05-27T13:09:09.871Z",
+    "__v": 0
+  },
+  {
+    "_id": "68386aaffaf02acb174e99ce",
+    "clienteId": "6835d064ee5d648dc01362ad",
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "nombre": "ccc",
+    "descripcion": "cc",
+    "fechaInicio": "2025-05-14T00:00:00.000Z",
+    "fechaFin": "2025-06-05T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "cc",
+        "caloriasEstimadas": 222,
+        "_id": "68386aaffaf02acb174e99cf"
+      }
+    ],
+    "createdAt": "2025-05-29T14:09:51.099Z",
+    "updatedAt": "2025-05-29T14:09:51.101Z",
+    "__v": 0
+  },
+  {
+    "_id": "68386c67b356bfc453860c7d",
+    "clienteId": "68386bf1b356bfc453860b94",
+    "entrenadorId": "68308f0ce307fe883934eb84",
+    "nombre": "ff",
+    "descripcion": "ff",
+    "fechaInicio": "2025-05-01T00:00:00.000Z",
+    "fechaFin": "2025-06-07T00:00:00.000Z",
+    "comidas": [
+      {
+        "tipoComida": "Desayuno",
+        "descripcion": "ff",
+        "caloriasEstimadas": 44,
+        "_id": "68386c67b356bfc453860c7e"
+      }
+    ],
+    "createdAt": "2025-05-29T14:17:11.267Z",
+    "updatedAt": "2025-05-29T14:17:11.269Z",
+    "__v": 0
+  }
+]

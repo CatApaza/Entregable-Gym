@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "68105a5fe27552886fc584f8",
+    "usuarioId": "68105a5fe27552886fc584f6",
+    "nivel": "admin",
+    "codigosGenerados": [],
+    "createdAt": "2025-04-29T04:49:35.214Z",
+    "updatedAt": "2025-04-29T04:49:35.214Z",
+    "__v": 0
+  },
+  {
+    "_id": "68308540d88c5b6dc01fb571",
+    "usuarioId": "68308540d88c5b6dc01fb56f",
+    "nivel": "admin",
+    "permisos": {
+      "gestionUsuarios": true,
+      "gestionEntrenadores": true,
+      "gestionClientes": true,
+      "gestionRutinas": true,
+      "gestionPagos": true,
+      "configuracionSistema": true
+    },
+    "ultimoAcceso": "2025-05-23T14:25:04.745Z",
+    "codigosGenerados": [],
+    "createdAt": "2025-05-23T14:25:04.749Z",
+    "updatedAt": "2025-05-23T14:25:04.749Z",
+    "__v": 0
+  }
+]

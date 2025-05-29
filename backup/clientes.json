@@ -1,0 +1,161 @@
+[
+  {
+    "_id": "680560d39cfab96166b5f89b",
+    "usuarioId": "68055cd79cfab96166b5f89a",
+    "objetivo": "Perder peso",
+    "nivel": "Intermedio",
+    "observaciones": "Cliente con experiencia previa"
+  },
+  {
+    "_id": "681d7263c3fa2b5339fa49a3",
+    "usuarioId": "681d7263c3fa2b5339fa49a1",
+    "objetivo": "tonificacion",
+    "nivel": "principiante",
+    "observaciones": "holas",
+    "__v": 0,
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "fechaAsignacionEntrenador": "2025-05-09T03:35:13.736Z"
+  },
+  {
+    "_id": "681d791e1835b065f077f361",
+    "usuarioId": "681d791e1835b065f077f35f",
+    "objetivo": "ganancia_muscular",
+    "nivel": "avanzado",
+    "observaciones": "123",
+    "__v": 0
+  },
+  {
+    "_id": "681d8a40b0ce554d0a4c1aad",
+    "usuarioId": "681d8a40b0ce554d0a4c1aab",
+    "objetivo": "ganancia_muscular",
+    "nivel": "avanzado",
+    "observaciones": "Ya funciona",
+    "__v": 0,
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "fechaAsignacionEntrenador": "2025-05-09T04:53:40.145Z"
+  },
+  {
+    "_id": "682e89c6b0504d6ea51aed41",
+    "usuarioId": "682e89c6b0504d6ea51aed3f",
+    "objetivo": "tonificacion",
+    "nivel": "principiante",
+    "observaciones": "Holaaa",
+    "__v": 0,
+    "entrenadorId": "681d73b547bd12b3931ff962",
+    "fechaAsignacionEntrenador": "2025-05-22T02:20:14.055Z"
+  },
+  {
+    "_id": "682f392446a5365dc158dc77",
+    "usuarioId": "682f392446a5365dc158dc75",
+    "objetivo": "perdida_peso",
+    "nivel": "intermedio",
+    "observaciones": "Hola como estas",
+    "__v": 0
+  },
+  {
+    "_id": "682f3dcabf9160d31824fd2f",
+    "usuarioId": "682f3dcabf9160d31824fd2d",
+    "objetivo": "tonificacion",
+    "nivel": "intermedio",
+    "observaciones": "Hola soy ALdair",
+    "__v": 0,
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "fechaAsignacionEntrenador": "2025-05-22T15:08:13.704Z"
+  },
+  {
+    "_id": "682f41147c2fb1abd04edb39",
+    "usuarioId": "682f41147c2fb1abd04edb37",
+    "objetivo": "ganancia_muscular",
+    "nivel": "principiante",
+    "observaciones": "Hola soy ale",
+    "__v": 0,
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "fechaAsignacionEntrenador": "2025-05-22T15:22:29.749Z"
+  },
+  {
+    "_id": "682f526f246b8ed8e000620e",
+    "usuarioId": "682f526f246b8ed8e000620c",
+    "objetivo": "perdida_peso",
+    "nivel": "principiante",
+    "observaciones": "hola soy julia",
+    "__v": 0
+  },
+  {
+    "_id": "682f52af246b8ed8e0006232",
+    "usuarioId": "682f52af246b8ed8e0006230",
+    "objetivo": "mejora_rendimiento",
+    "nivel": "avanzado",
+    "observaciones": "hola soy luz",
+    "__v": 0,
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "fechaAsignacionEntrenador": "2025-05-22T16:37:17.857Z"
+  },
+  {
+    "_id": "682f533d246b8ed8e000632f",
+    "usuarioId": "682f533d246b8ed8e000632d",
+    "objetivo": "perdida_peso",
+    "nivel": "principiante",
+    "observaciones": "Hola soy vania",
+    "__v": 0,
+    "entrenadorId": "682f3d89bf9160d31824fcfa",
+    "fechaAsignacionEntrenador": "2025-05-22T16:39:39.530Z"
+  },
+  {
+    "_id": "682f6b429542e5b94b87fd98",
+    "usuarioId": "682f6b429542e5b94b87fd96",
+    "objetivo": "perdida_peso",
+    "nivel": "principiante",
+    "observaciones": "sss",
+    "__v": 0
+  },
+  {
+    "_id": "682f6f8e3ba550ec78dd9913",
+    "usuarioId": "682f6f8e3ba550ec78dd9911",
+    "objetivo": "ganancia_muscular",
+    "nivel": "principiante",
+    "observaciones": "xxx",
+    "__v": 0,
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "fechaAsignacionEntrenador": "2025-05-22T18:40:25.877Z"
+  },
+  {
+    "_id": "682f7d32e41300914115a8a9",
+    "usuarioId": "682f7d32e41300914115a8a7",
+    "objetivo": "ganancia_muscular",
+    "nivel": "principiante",
+    "observaciones": "hola soy ale",
+    "__v": 0,
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "fechaAsignacionEntrenador": "2025-05-22T19:38:42.315Z"
+  },
+  {
+    "_id": "6832ba2a1e8f7bf58ff515af",
+    "usuarioId": "6832ba291e8f7bf58ff515ad",
+    "objetivo": "salud_general",
+    "nivel": "principiante",
+    "observaciones": "Hola soy yo",
+    "__v": 0,
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "fechaAsignacionEntrenador": "2025-05-26T06:40:51.499Z"
+  },
+  {
+    "_id": "6835d064ee5d648dc01362ad",
+    "usuarioId": "6835d064ee5d648dc01362ab",
+    "objetivo": "ganancia_muscular",
+    "nivel": "intermedio",
+    "observaciones": "Hola",
+    "__v": 0,
+    "entrenadorId": "682f6e553ba550ec78dd9823",
+    "fechaAsignacionEntrenador": "2025-05-29T14:08:22.675Z"
+  },
+  {
+    "_id": "68386bf1b356bfc453860b94",
+    "usuarioId": "68386bf0b356bfc453860b92",
+    "objetivo": "ganancia_muscular",
+    "nivel": "intermedio",
+    "observaciones": "hola soy brandy",
+    "__v": 0,
+    "entrenadorId": "68308f0ce307fe883934eb84",
+    "fechaAsignacionEntrenador": "2025-05-29T14:15:25.757Z"
+  }
+]
